@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Donation Drop-off Centers · Venezuela Needs Us</title>
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
+<style>
+  :root{ --navy:#11214a; --red:#cf1b2b; --yellow:#f4c40b; }
+  *{ box-sizing:border-box; }
+  body{ margin:0; font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif; color:#1c2333; background:#fff; }
+  .wrap{ max-width:1100px; margin:0 auto; padding:0 0 16px; }
+  .flag{ height:8px; display:flex; }
+  .flag i{ flex:1; } .flag .y{ background:var(--yellow); } .flag .b{ background:var(--navy); } .flag .r{ background:var(--red); }
+  .head{ display:flex; align-items:center; gap:12px; padding:16px 16px 0; }
+  .head .dot{ width:48px;height:48px;border-radius:50%;background:var(--red);display:flex;align-items:center;justify-content:center;font-size:24px;flex-shrink:0;color:#fff; }
+  .head h1{ font-size:21px;margin:0;color:var(--navy);font-weight:800;letter-spacing:-.3px; }
+  .head p{ font-size:14px;margin:3px 0 0;color:#5b6273; }
+  .controls{ display:flex;gap:8px;flex-wrap:wrap;margin:14px 16px;align-items:center; }
+  .controls input,.controls select{ height:42px;border:1.5px solid #d6d9e0;border-radius:10px;padding:0 12px;font-size:15px;background:#fff; }
+  .controls input:focus,.controls select:focus{ outline:none;border-color:var(--navy); }
+  .controls input{ flex:1;min-width:200px; }
+  .grid{ display:grid; grid-template-columns:1fr; gap:16px; padding:0 16px; }
+  @media(min-width:820px){ .grid{ grid-template-columns:1fr 1fr; } }
+  #map{ height:440px;border-radius:14px;border:2px solid var(--navy);z-index:0; }
+  .list{ display:flex;flex-direction:column;gap:10px;max-height:440px;overflow:auto;padding-right:4px; }
+  .card{ border:1px solid #e4e6ec;border-left:5px solid var(--yellow);border-radius:10px;padding:12px 14px;display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;transition:all .15s;cursor:pointer; }
+  .card:hover{ border-color:var(--navy);border-left-color:var(--red);background:#f7f9fc; }
+  .card .info{ flex:1;min-width:150px; }
+  .card .name{ font-weight:700;font-size:15px;color:var(--navy);margin:0; }
+  .card .addr{ font-size:13px;color:#5b6273;margin:3px 0 0; }
+  .btn{ white-space:nowrap;display:inline-flex;align-items:center;gap:6px;background:var(--red);color:#fff;border:none;border-radius:9px;padding:9px 14px;font-size:14px;font-weight:700;cursor:pointer;text-decoration:none; }
+  .btn:hover{ background:#a8141f; }
+  .pop b{ color:var(--navy);font-size:14px; }
+  .pop a{ display:inline-block;margin-top:8px;background:var(--red);color:#fff;padding:7px 12px;border-radius:8px;text-decoration:none;font-weight:700;font-size:13px; }
+  .empty{ text-align:center;color:#5b6273;padding:20px;font-size:14px; }
+  .foot{ font-size:12px;color:#8a90a0;text-align:center;margin-top:16px;padding:0 16px; }
+  .foot a{ color:var(--navy);font-weight:700;text-decoration:none; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="flag"><i class="y"></i><i class="b"></i><i class="r"></i></div>
+  <div class="head">
+    <div class="dot">❤</div>
+    <div>
+      <h1>Venezuela Needs Us — Donation Drop-off Centers</h1>
+      <p>Pick the center closest to you and tap “Directions” to open the route in Google Maps.</p>
+    </div>
+  </div>
+
+  <div class="controls">
+    <input id="q" type="text" placeholder="Search by name or city…">
+    <select id="city"><option value="">All cities</option></select>
+  </div>
+
+  <div class="grid">
+    <div id="map"></div>
+    <div class="list" id="list"></div>
+  </div>
+  <div class="empty" id="empty" style="display:none;">No results.</div>
+  <p class="foot">Addresses verified · Urgent delivery to Caracas · <a href="https://www.EmbraceVenezuela.com" target="_blank">www.EmbraceVenezuela.com</a></p>
+</div>
+
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script>
+const data = [
+  {n:"El Sabor Katracho", a:"4267 S Orcas St", c:"Seattle, WA 98118"},
+  {n:"Mojito", a:"8511 Roosevelt Way NE", c:"Seattle, WA 98115"},
+  {n:"El Parche Colombiano", a:"11740 15th Ave NE", c:"Seattle, WA 98125"},
+  {n:"El Parche Colombiano (Tacoma)", a:"6324 E McKinley Ave", c:"Tacoma, WA 98404"},
+  {n:"Paparepas (Renton)", a:"17034 116th Ave SE", c:"Renton, WA 98058"},
+  {n:"Paparepas (Capitol Hill)", a:"1620 Broadway Ste 100E", c:"Seattle, WA 98122"},
+  {n:"Arepa Venezuelan Kitchen", a:"4500 9th Ave NE", c:"Seattle, WA 98105"},
+  {n:"Arepa Venezuelan Kitchen (Bellevue)", a:"4058 Factoria Square Mall SE", c:"Bellevue, WA 98006"},
+  {n:"Club Sur · Café Con Leche", a:"2901 1st Ave S", c:"Seattle, WA 98134"},
+  {n:"La Zuliana Venezuelan Food", a:"10700 SE 208th St #101", c:"Kent, WA 98031"},
+  {n:"Fuel Sports Grill", a:"8037 15th Ave NW", c:"Seattle, WA 98117"}
+];
+data.forEach(d=>{ d.full=d.a+", "+d.c; d.cityName=d.c.split(",")[0]; });
+
+const dir = d => "https://www.google.com/maps/dir/?api=1&destination="+encodeURIComponent(d.n+", "+d.full);
+
+const map = L.map('map').setView([47.55,-122.25], 10);
+L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{
+  maxZoom:19, attribution:'© OpenStreetMap'
+}).addTo(map);
+
+const navyIcon = L.divIcon({className:'',iconSize:[26,26],iconAnchor:[13,26],popupAnchor:[0,-24],
+  html:'<svg width="26" height="26" viewBox="0 0 26 26"><path d="M13 0C7 0 3 4 3 10c0 7 10 16 10 16s10-9 10-16C23 4 19 0 13 0z" fill="#cf1b2b" stroke="#11214a" stroke-width="1.5"/><circle cx="13" cy="10" r="4" fill="#f4c40b"/></svg>'});
+
+const listEl=document.getElementById('list'), q=document.getElementById('q'),
+      city=document.getElementById('city'), empty=document.getElementById('empty');
+
+[...new Set(data.map(d=>d.cityName))].sort().forEach(cn=>{
+  const o=document.createElement('option');o.value=cn;o.textContent=cn;city.appendChild(o);
+});
+
+async function geocode(d){
+  try{
+    const url="https://nominatim.openstreetmap.org/search?format=json&limit=1&countrycodes=us&q="+encodeURIComponent(d.full);
+    const r=await fetch(url); const j=await r.json();
+    if(j[0]){ d.lat=+j[0].lat; d.lon=+j[0].lon; }
+  }catch(e){}
+}
+
+async function init(){
+  for(const d of data){ await geocode(d); await new Promise(r=>setTimeout(r,900)); placeMarker(d); }
+  const pts=data.filter(d=>d.lat).map(d=>[d.lat,d.lon]);
+  if(pts.length) map.fitBounds(pts,{padding:[30,30]});
+}
+
+function placeMarker(d){
+  if(!d.lat) return;
+  d.marker=L.marker([d.lat,d.lon],{icon:navyIcon}).addTo(map)
+    .bindPopup('<div class="pop"><b>'+d.n+'</b><br>'+d.full+'<br><a href="'+dir(d)+'" target="_blank">▶ Directions</a></div>');
+}
+
+function render(){
+  const term=q.value.trim().toLowerCase(), cf=city.value;
+  listEl.innerHTML=''; let shown=0;
+  data.forEach(d=>{
+    if(cf && d.cityName!==cf) return;
+    if(term && !(d.n.toLowerCase().includes(term)||d.full.toLowerCase().includes(term))) return;
+    shown++;
+    const card=document.createElement('div'); card.className='card';
+    card.innerHTML='<div class="info"><p class="name">'+d.n+'</p><p class="addr">📍 '+d.full+'</p></div>'+
+                   '<a class="btn" href="'+dir(d)+'" target="_blank" onclick="event.stopPropagation()">▶ Directions</a>';
+    card.onclick=()=>{ if(d.marker){ map.setView([d.lat,d.lon],14); d.marker.openPopup(); document.getElementById('map').scrollIntoView({behavior:'smooth',block:'center'}); } };
+    listEl.appendChild(card);
+  });
+  empty.style.display=shown?'none':'block';
+}
+q.oninput=render; city.onchange=render;
+render(); init();
+</script>
+</body>
+</html>
