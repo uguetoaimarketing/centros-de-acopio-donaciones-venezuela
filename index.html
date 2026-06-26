@@ -40,7 +40,8 @@
   .pop a{ display:inline-block;margin-top:8px;background:var(--red);color:#fff;padding:7px 12px;border-radius:8px;text-decoration:none;font-weight:700;font-size:13px; }
   .empty{ text-align:center;color:#5b6273;padding:20px;font-size:14px; }
   .donate{ padding:0 16px;margin-top:22px; }
-  .donate h2{ font-size:18px;color:var(--navy);margin:0 0 10px;font-weight:800; }
+  .donate h2{ font-size:18px;color:var(--navy);margin:0 0 4px;font-weight:800; }
+  .dsub{ font-size:13.5px;color:#5b6273;margin:0 0 12px; }
   .priority{ background:#fff0f0;border:2px solid var(--red);border-radius:12px;padding:12px 14px;margin-bottom:16px; }
   .priority h3{ margin:0 0 8px;color:var(--red);font-size:15px;font-weight:800; }
   .priority ul{ margin:0;padding-left:18px;columns:2;column-gap:18px; }
@@ -99,13 +100,9 @@
 
   <div class="donate">
     <h2 id="donateTitle"></h2>
-    <div class="priority" id="priorityBox"></div>
+    <p class="dsub" id="donateSub"></p>
     <div class="note" id="note"></div>
-    <div class="dcols">
-      <div class="dcard ok"><div class="dh" id="hOk"></div><ul id="lOk"></ul></div>
-      <div class="dcard cond"><div class="dh" id="hCond"></div><ul id="lCond"></ul></div>
-      <div class="dcard no"><div class="dh" id="hNo"></div><ul id="lNo"></ul></div>
-    </div>
+    <div class="dcols" id="dcols"></div>
   </div>
 
   <p class="foot" id="foot"></p>
@@ -148,43 +145,18 @@ const T = {
     flow:'<b>How it works:</b> donations collected at the centers are consolidated at our central warehouse in Renton, then shipped to <a href="https://www.globalempowermentmission.org/" target="_blank">Global Empowerment Mission</a> (1850 NW 84th Ave #100, Doral, FL 33126) for international distribution.<span class="chain">Collection centers (WA) → Renton warehouse → GEM, Doral FL → International distribution</span><span class="onlynote">⚠️ The central warehouse only receives shipments from the collection centers — please do not drop off donations here. Bring your items to any collection center above.</span>',
     noResults:"No results.",
     donateTitle:"What to donate",
-    priorityTitle:"🚑 Priority right now",
-    priority:[
-      "Heavy-duty work gloves (to clear rubble & rocks)",
-      "Gauze, sterile dressings &amp; bandages",
-      "Medical tape &amp; elastic/compression bandages",
-      "Antiseptic wipes",
-      "Nitrile or latex exam gloves",
-      "N95 / dust masks",
-      "First-aid kits &amp; tourniquets",
-      "Sturdy closed-toe shoes &amp; work boots",
-      "Flashlights &amp; headlamps",
-      "Protective eyewear"
-    ],
+    donateSub:"Official immediate-needs list requested by Global Empowerment Mission (GEM):",
     note:"📦 <b>Please bring everything in boxes.</b> We accept donations that are <b>new, clean, sealed, in-date, and sorted by category</b>. Medicine, chemicals, batteries/power banks, and medical supplies are accepted <b>only if requested and approved by the receiving organization</b>.",
     foot:'Addresses verified · Donate online via <a href="https://www.EmbraceVenezuela.com" target="_blank">Victoria Venezuela Foundation</a>',
-    hOk:"✅ Accepted", hCond:"⚠️ Accepted with conditions", hNo:"❌ Not accepted",
-    ok:[
-      "<b>Food:</b> non-perishable food, energy bars, powdered milk, infant formula, baby food (sealed, in-date, easy-open, avoid glass)",
-      "<b>Hygiene:</b> soap, shampoo, toothpaste &amp; toothbrushes, toilet paper, sanitary pads, diapers, wet wipes, deodorant",
-      "<b>First aid (no medicine):</b> gauze, bandages, medical tape, gloves, saline solution, basic kits, digital thermometers (no mercury)",
-      "<b>Clothing &amp; warmth:</b> clean clothes in good condition, new socks, new underwear only, closed-toe shoes, blankets, sleeping bags",
-      "<b>Shelter:</b> tents, waterproof tarps, sleeping mats, thermal blankets",
-      "<b>For children:</b> diapers, blankets, books, small toys; bottles &amp; pacifiers (new &amp; sealed only)"
+    cats:[
+      {h:"🥫 Non-perishable food", items:["Canned protein (chicken, beef, tuna, vienna sausages, sardines)","Canned goods (beans, vegetables, fruits)","Dried fruits &amp; vegetables","Snacks (protein bars, crackers, chips, beef jerky)","Ramen","Meals ready to eat (MREs)"]},
+      {h:"🏠 Household &amp; shelter", items:["Shelter: tents, cots, air mattresses, suitcases, backpacks (new)","Sleeping: sleeping bags, blankets, pillows (new)","Emergency: first-aid kits, LifeStraw filters, solar lanterns, power banks, radios, flashlights, batteries","Cleanup &amp; repair: tarps, duct tape, industrial trash bags, shovels, rakes, work boots","Protective gear: KN95 masks, hazmat suits, work gloves, hand &amp; foot warmers"]},
+      {h:"👶 Baby &amp; children", items:["Diapers","Wipes","New bottles","Children's hygiene products","New clothes"]},
+      {h:"🧼 Hygiene", items:["Toothbrushes / toothpaste","Deodorant","Feminine hygiene products","Toilet paper","Wet wipes"]},
+      {h:"🐾 Pets", items:["Pet food (canned dog &amp; cat food, treats)","Pet supplies (bowls, leashes, crates, heavy-duty pads)","Pet care (chew toys, brushes, shampoo &amp; conditioner)"]}
     ],
-    cond:[
-      "<b>Pet food:</b> only if logistics allow or requested by an animal shelter — never ahead of food, water, medicine or shelter",
-      "<b>Bleach, disinfectants, liquids, batteries &amp; power banks:</b> local drop-off only — not by courier or air (hazmat restrictions)",
-      "<b>Medicine:</b> only through authorized medical organizations or foundations with permits — never as a general pill collection"
-    ],
-    no:[
-      "Open or expired medicine; no box, lot or expiry date; loose samples",
-      "Antibiotics without medical coordination",
-      "Homemade food or expired food",
-      "Used underwear; broken shoes",
-      "Glass containers, aerosols, perfumes, strong chemicals",
-      "Unsorted or mixed boxes"
-    ]
+    notAcceptedTitle:"❌ Not accepted",
+    notAccepted:["Open or expired medicine; no box, lot or expiry date","Homemade or expired food","Used underwear; broken shoes","Glass containers, aerosols, perfumes, strong chemicals","Unsorted or mixed boxes"]
   },
   es:{
     toggle:"English", lang:"es",
@@ -198,43 +170,18 @@ const T = {
     flow:'<b>Cómo funciona:</b> las donaciones recogidas en los centros se consolidan en nuestro almacén central en Renton y luego se envían a <a href="https://www.globalempowermentmission.org/" target="_blank">Global Empowerment Mission</a> (1850 NW 84th Ave #100, Doral, FL 33126) para su distribución internacional.<span class="chain">Centros de acopio (WA) → Almacén Renton → GEM, Doral FL → Distribución internacional</span><span class="onlynote">⚠️ El almacén central solo recibe lo que llega desde los centros de acopio — por favor no lleves donaciones aquí. Entrégalas en cualquiera de los centros de acopio.</span>',
     noResults:"Sin resultados.",
     donateTitle:"Qué donar",
-    priorityTitle:"🚑 Prioridad ahora mismo",
-    priority:[
-      "Guantes de trabajo resistentes (para remover escombros y piedras)",
-      "Gasas, apósitos estériles y vendas",
-      "Esparadrapo y vendas elásticas/de compresión",
-      "Toallitas antisépticas",
-      "Guantes de examen de nitrilo o látex",
-      "Mascarillas N95 / para polvo",
-      "Botiquines y torniquetes",
-      "Zapatos cerrados resistentes y botas de trabajo",
-      "Linternas y linternas de cabeza",
-      "Gafas de protección"
-    ],
+    donateSub:"Lista oficial de necesidades inmediatas solicitada por Global Empowerment Mission (GEM):",
     note:"📦 <b>Por favor trae todo en cajas.</b> Recibimos donaciones <b>nuevas, limpias, selladas, vigentes y clasificadas por categoría</b>. Medicamentos, químicos, baterías/power banks y artículos médicos se aceptan <b>solo si han sido solicitados y aprobados por la organización receptora</b>.",
     foot:'Direcciones verificadas · Dona en línea con <a href="https://www.EmbraceVenezuela.com" target="_blank">Victoria Venezuela Foundation</a>',
-    hOk:"✅ Sí, recibir", hCond:"⚠️ Con condiciones", hNo:"❌ No aceptado",
-    ok:[
-      "<b>Alimentos:</b> alimentos no perecederos, barras energéticas, leche en polvo, fórmula infantil, comida para bebés (sellados, vigentes, fáciles de abrir, evitar vidrio)",
-      "<b>Higiene:</b> jabón, champú, pasta y cepillos dentales, papel higiénico, toallas sanitarias, pañales, toallitas húmedas, desodorante",
-      "<b>Primeros auxilios (sin medicamentos):</b> gasas, vendas, esparadrapo, guantes, suero fisiológico, botiquines básicos, termómetros digitales (sin mercurio)",
-      "<b>Ropa y abrigo:</b> ropa limpia en buen estado, medias nuevas, ropa interior solo nueva, zapatos cerrados, cobijas, sacos de dormir",
-      "<b>Refugio:</b> carpas, lonas impermeables, colchonetas, mantas térmicas",
-      "<b>Para niños:</b> pañales, mantas, libros, juguetes pequeños; biberones y chupetes (solo nuevos y sellados)"
+    cats:[
+      {h:"🥫 Alimentos no perecederos", items:["Proteína enlatada (pollo, carne, atún, salchichas viena, sardinas)","Enlatados (frijoles, vegetales, frutas)","Frutas y vegetales deshidratados","Snacks (barras de proteína, galletas, papas, beef jerky)","Ramen","Comidas listas para comer (MRE)"]},
+      {h:"🏠 Hogar y refugio", items:["Refugio: carpas, catres, colchones inflables, maletas, mochilas (nuevos)","Descanso: sacos de dormir, cobijas, almohadas (nuevos)","Emergencia: botiquines, filtros LifeStraw, lámparas solares, power banks, radios, linternas, baterías","Limpieza y reparación: lonas, cinta adhesiva, bolsas de basura industriales, palas, rastrillos, botas de trabajo","Protección: mascarillas KN95, trajes hazmat, guantes de trabajo, calentadores de manos y pies"]},
+      {h:"👶 Bebés y niños", items:["Pañales","Toallitas húmedas","Biberones nuevos","Productos de higiene infantil","Ropa nueva"]},
+      {h:"🧼 Higiene", items:["Cepillos y pasta dental","Desodorante","Productos de higiene femenina","Papel higiénico","Toallitas húmedas"]},
+      {h:"🐾 Mascotas", items:["Comida (enlatada para perro y gato, premios)","Artículos (platos, correas, jaulas, pads de alta absorción)","Cuidado (juguetes, cepillos, shampoo y acondicionador)"]}
     ],
-    cond:[
-      "<b>Alimento para mascotas:</b> solo si hay capacidad logística o lo solicita un refugio animal — nunca por encima de comida, agua, medicina o refugio",
-      "<b>Cloro, desinfectantes, líquidos, baterías y power banks:</b> solo entrega local — no por courier ni avión (restricciones de materiales peligrosos)",
-      "<b>Medicamentos:</b> solo a través de organizaciones médicas o fundaciones con permisos — nunca como recolección general de pastillas"
-    ],
-    no:[
-      "Medicamentos abiertos o vencidos; sin caja, lote ni fecha; muestras sueltas",
-      "Antibióticos sin coordinación médica",
-      "Comida casera o alimentos vencidos",
-      "Ropa interior usada; zapatos rotos",
-      "Envases de vidrio, aerosoles, perfumes, químicos fuertes",
-      "Cajas sin clasificar o mixtas"
-    ]
+    notAcceptedTitle:"❌ No aceptado",
+    notAccepted:["Medicamentos abiertos o vencidos; sin caja, lote ni fecha","Comida casera o vencida","Ropa interior usada; zapatos rotos","Envases de vidrio, aerosoles, perfumes, químicos fuertes","Cajas sin clasificar o mixtas"]
   }
 };
 
@@ -278,13 +225,12 @@ function setLang(l){
   q.placeholder=t.search;
   empty.textContent=t.noResults;
   document.getElementById('donateTitle').textContent=t.donateTitle;
-  document.getElementById('priorityBox').innerHTML='<h3>'+t.priorityTitle+'</h3><ul>'+t.priority.map(x=>'<li>'+x+'</li>').join('')+'</ul>';
+  document.getElementById('donateSub').textContent=t.donateSub;
   document.getElementById('note').innerHTML=t.note;
   document.getElementById('foot').innerHTML=t.foot;
-  document.getElementById('hOk').textContent=t.hOk;
-  document.getElementById('hCond').textContent=t.hCond;
-  document.getElementById('hNo').textContent=t.hNo;
-  fillList('lOk',t.ok); fillList('lCond',t.cond); fillList('lNo',t.no);
+  let cards=t.cats.map(c=>'<div class="dcard ok"><div class="dh">'+c.h+'</div><ul>'+c.items.map(i=>'<li>'+i+'</li>').join('')+'</ul></div>').join('');
+  cards+='<div class="dcard no"><div class="dh">'+t.notAcceptedTitle+'</div><ul>'+t.notAccepted.map(i=>'<li>'+i+'</li>').join('')+'</ul></div>';
+  document.getElementById('dcols').innerHTML=cards;
   buildCities();
   data.forEach(d=>{ if(d.marker) d.marker.setPopupContent(popHtml(d)); });
   render();
