@@ -34,6 +34,18 @@
   .pop b{ color:var(--navy);font-size:14px; }
   .pop a{ display:inline-block;margin-top:8px;background:var(--red);color:#fff;padding:7px 12px;border-radius:8px;text-decoration:none;font-weight:700;font-size:13px; }
   .empty{ text-align:center;color:#5b6273;padding:20px;font-size:14px; }
+  .donate{ padding:0 16px;margin-top:22px; }
+  .donate h2{ font-size:18px;color:var(--navy);margin:0 0 10px;font-weight:800; }
+  .note{ background:#fff7e6;border:1.5px solid var(--yellow);border-radius:12px;padding:12px 14px;font-size:13.5px;color:#5b4a00;margin-bottom:16px;line-height:1.5; }
+  .dcols{ display:grid;grid-template-columns:1fr;gap:14px; }
+  @media(min-width:760px){ .dcols{ grid-template-columns:repeat(3,1fr); } }
+  .dcard{ border:1px solid #e4e6ec;border-radius:12px;padding:0;overflow:hidden; }
+  .dcard .dh{ padding:10px 14px;font-weight:800;font-size:14px;color:#fff; }
+  .dcard.ok .dh{ background:#1f9d57; } .dcard.cond .dh{ background:#e08600; } .dcard.no .dh{ background:var(--red); }
+  .dcard ul{ margin:0;padding:10px 14px 12px;list-style:none; }
+  .dcard li{ font-size:13px;color:#3a4256;padding:5px 0;border-bottom:1px solid #f0f1f5;line-height:1.45; }
+  .dcard li:last-child{ border-bottom:none; }
+  .dcard li b{ color:var(--navy); }
   .foot{ font-size:12px;color:#8a90a0;text-align:center;margin-top:16px;padding:0 16px; }
   .foot a{ color:var(--navy);font-weight:700;text-decoration:none; }
 </style>
@@ -59,6 +71,44 @@
     <div class="list" id="list"></div>
   </div>
   <div class="empty" id="empty" style="display:none;">No results.</div>
+
+  <div class="donate">
+    <h2>What to donate</h2>
+    <div class="note">We accept donations that are <b>new, clean, sealed, in-date, and sorted by category</b>. Medicine, chemicals, batteries/power banks, and medical supplies are accepted <b>only if requested and approved by the receiving organization</b>.</div>
+    <div class="dcols">
+      <div class="dcard ok">
+        <div class="dh">✅ Accepted</div>
+        <ul>
+          <li><b>Water &amp; food:</b> bottled water, non-perishable food, energy bars, powdered milk, infant formula, baby food (sealed, in-date, easy-open, avoid glass)</li>
+          <li><b>Hygiene:</b> soap, shampoo, toothpaste &amp; toothbrushes, toilet paper, sanitary pads, diapers, wet wipes, deodorant</li>
+          <li><b>First aid (no medicine):</b> gauze, bandages, medical tape, gloves, saline solution, basic kits, digital thermometers (no mercury)</li>
+          <li><b>Clothing &amp; warmth:</b> clean clothes in good condition, new socks, new underwear only, closed-toe shoes, blankets, sleeping bags</li>
+          <li><b>Shelter:</b> tents, waterproof tarps, sleeping mats, thermal blankets</li>
+          <li><b>For children:</b> diapers, blankets, books, small toys; bottles &amp; pacifiers (new &amp; sealed only)</li>
+        </ul>
+      </div>
+      <div class="dcard cond">
+        <div class="dh">⚠️ Accepted with conditions</div>
+        <ul>
+          <li><b>Pet food:</b> only if logistics allow or requested by an animal shelter — never ahead of food, water, medicine or shelter</li>
+          <li><b>Bleach, disinfectants, liquids, batteries &amp; power banks:</b> local drop-off only — not by courier or air (hazmat restrictions)</li>
+          <li><b>Medicine:</b> only through authorized medical organizations or foundations with permits — never as a general pill collection</li>
+        </ul>
+      </div>
+      <div class="dcard no">
+        <div class="dh">❌ Not accepted</div>
+        <ul>
+          <li>Open or expired medicine; no box, lot or expiry date; loose samples</li>
+          <li>Antibiotics without medical coordination</li>
+          <li>Homemade food or expired food</li>
+          <li>Used underwear; broken shoes</li>
+          <li>Glass containers, aerosols, perfumes, strong chemicals</li>
+          <li>Unsorted or mixed boxes</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
   <p class="foot">Addresses verified · Donate online via <a href="https://www.EmbraceVenezuela.com" target="_blank">Victoria Venezuela Foundation</a></p>
 </div>
 
