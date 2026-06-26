@@ -41,6 +41,12 @@
   .donate{ padding:0 16px;margin-top:22px; }
   .donate h2{ font-size:18px;color:var(--navy);margin:0 0 10px;font-weight:800; }
   .note{ background:#fff7e6;border:1.5px solid var(--yellow);border-radius:12px;padding:12px 14px;font-size:13.5px;color:#5b4a00;margin-bottom:16px;line-height:1.5; }
+  .flow{ background:#eaf0fb;border:1.5px solid var(--navy);border-radius:12px;padding:12px 14px;margin:14px 16px 0;font-size:13.5px;color:var(--navy);line-height:1.5; }
+  .flow a{ color:var(--red);font-weight:700;text-decoration:none; }
+  .flow .chain{ font-weight:800;display:block;margin-top:6px; }
+  .card.wh{ border-left-color:var(--navy);background:#f4f7fd; }
+  .card.wh .name{ display:flex;align-items:center;gap:6px;flex-wrap:wrap; }
+  .badge{ display:inline-block;background:var(--navy);color:#fff;font-size:11px;font-weight:800;padding:2px 8px;border-radius:6px; }
   .dcols{ display:grid;grid-template-columns:1fr;gap:14px; }
   @media(min-width:760px){ .dcols{ grid-template-columns:repeat(3,1fr); } }
   .dcard{ border:1px solid #e4e6ec;border-radius:12px;padding:0;overflow:hidden; }
@@ -65,6 +71,8 @@
     </div>
     <button class="toggle" id="toggle" onclick="setLang(LANG==='en'?'es':'en')"></button>
   </div>
+
+  <div class="flow" id="flow"></div>
 
   <div class="controls">
     <input id="q" type="text">
@@ -105,7 +113,8 @@ const data = [
   {n:"Club Sur · Café Con Leche", a:"2901 1st Ave S", c:"Seattle, WA 98134"},
   {n:"La Zuliana Venezuelan Food", a:"10700 SE 208th St #101", c:"Kent, WA 98031"},
   {n:"Fuel Sports Grill", a:"8037 15th Ave NW", c:"Seattle, WA 98117"},
-  {n:"Waca Maya", a:"10410 Holman Rd N", c:"Seattle, WA 98133"}
+  {n:"Waca Maya", a:"10410 Holman Rd N", c:"Seattle, WA 98133"},
+  {n:"Warehouse", a:"801 SW 16th St", c:"Renton, WA 98057", wh:true}
 ];
 data.forEach(d=>{ d.full=d.a+", "+d.c; d.cityName=d.c.split(",")[0]; });
 
@@ -117,6 +126,8 @@ const T = {
     search:"Search by name or city…",
     allCities:"All cities",
     directions:"Directions",
+    whName:"Central warehouse — Renton", whTag:"Ships to Miami",
+    flow:'<b>How it works:</b> donations collected at the centers are consolidated at our central warehouse in Renton, then shipped to Miami and distributed internationally by <a href="https://www.globalempowermentmission.org/" target="_blank">Global Empowerment Mission</a>.<span class="chain">Collection centers → Renton warehouse → Miami → Global Empowerment Mission</span>',
     noResults:"No results.",
     donateTitle:"What to donate",
     note:"We accept donations that are <b>new, clean, sealed, in-date, and sorted by category</b>. Medicine, chemicals, batteries/power banks, and medical supplies are accepted <b>only if requested and approved by the receiving organization</b>.",
@@ -151,6 +162,8 @@ const T = {
     search:"Buscar por nombre o ciudad…",
     allCities:"Todas las ciudades",
     directions:"Cómo llegar",
+    whName:"Almacén central — Renton", whTag:"Sale a Miami",
+    flow:'<b>Cómo funciona:</b> las donaciones recogidas en los centros se consolidan en nuestro almacén central en Renton y luego se envían a Miami para su distribución internacional con <a href="https://www.globalempowermentmission.org/" target="_blank">Global Empowerment Mission</a>.<span class="chain">Centros de acopio → Almacén Renton → Miami → Global Empowerment Mission</span>',
     noResults:"Sin resultados.",
     donateTitle:"Qué donar",
     note:"Recibimos donaciones <b>nuevas, limpias, selladas, vigentes y clasificadas por categoría</b>. Medicamentos, químicos, baterías/power banks y artículos médicos se aceptan <b>solo si han sido solicitados y aprobados por la organización receptora</b>.",
@@ -189,6 +202,11 @@ L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{maxZoom:19, at
 const navyIcon = L.divIcon({className:'',iconSize:[26,26],iconAnchor:[13,26],popupAnchor:[0,-24],
   html:'<svg width="26" height="26" viewBox="0 0 26 26"><path d="M13 0C7 0 3 4 3 10c0 7 10 16 10 16s10-9 10-16C23 4 19 0 13 0z" fill="#cf1b2b" stroke="#11214a" stroke-width="1.5"/><circle cx="13" cy="10" r="4" fill="#f4c40b"/></svg>'});
 
+const whIcon = L.divIcon({className:'',iconSize:[38,38],iconAnchor:[19,36],popupAnchor:[0,-34],
+  html:'<svg width="38" height="38" viewBox="0 0 38 38"><path d="M19 0C10 0 5 6 5 13c0 10 14 24 14 24s14-14 14-24C33 6 28 0 19 0z" fill="#f4c40b" stroke="#11214a" stroke-width="2.5"/><path d="M11 16l8-5 8 5v8H11z" fill="#11214a"/><rect x="16.5" y="18" width="5" height="6" fill="#f4c40b"/></svg>'});
+
+const displayName = d => d.wh ? T[LANG].whName : d.n;
+
 const listEl=document.getElementById('list'), q=document.getElementById('q'),
       city=document.getElementById('city'), empty=document.getElementById('empty');
 
@@ -210,6 +228,7 @@ function setLang(l){
   document.getElementById('toggle').textContent=t.toggle;
   document.getElementById('h1').textContent=t.h1;
   document.getElementById('sub').textContent=t.sub;
+  document.getElementById('flow').innerHTML=t.flow;
   q.placeholder=t.search;
   empty.textContent=t.noResults;
   document.getElementById('donateTitle').textContent=t.donateTitle;
@@ -225,7 +244,8 @@ function setLang(l){
 }
 
 function popHtml(d){
-  return '<div class="pop"><b>'+d.n+'</b><br>'+d.full+'<br><a href="'+dir(d)+'" target="_blank">▶ '+T[LANG].directions+'</a></div>';
+  const tag = d.wh ? ' 📦 '+T[LANG].whTag : '';
+  return '<div class="pop"><b>'+displayName(d)+'</b>'+tag+'<br>'+d.full+'<br><a href="'+dir(d)+'" target="_blank">▶ '+T[LANG].directions+'</a></div>';
 }
 
 async function geocode(d){
@@ -244,21 +264,29 @@ async function init(){
 
 function placeMarker(d){
   if(!d.lat) return;
-  d.marker=L.marker([d.lat,d.lon],{icon:navyIcon}).addTo(map).bindPopup(popHtml(d));
+  d.marker=L.marker([d.lat,d.lon],{icon:d.wh?whIcon:navyIcon,zIndexOffset:d.wh?1000:0}).addTo(map).bindPopup(popHtml(d));
+}
+
+function makeCard(d,t){
+  const card=document.createElement('div'); card.className='card'+(d.wh?' wh':'');
+  const nameHtml = d.wh ? displayName(d)+' <span class="badge">📦 '+t.whTag+'</span>' : d.n;
+  card.innerHTML='<div class="info"><p class="name">'+nameHtml+'</p><p class="addr">📍 '+d.full+'</p></div>'+
+                 '<a class="btn" href="'+dir(d)+'" target="_blank" onclick="event.stopPropagation()">▶ '+t.directions+'</a>';
+  card.onclick=()=>{ if(d.marker){ map.setView([d.lat,d.lon],14); d.marker.openPopup(); document.getElementById('map').scrollIntoView({behavior:'smooth',block:'center'}); } };
+  return card;
 }
 
 function render(){
   const term=q.value.trim().toLowerCase(), cf=city.value, t=T[LANG];
   listEl.innerHTML=''; let shown=0;
+  const wh=data.find(d=>d.wh);
+  if(wh){ listEl.appendChild(makeCard(wh,t)); }
   data.forEach(d=>{
+    if(d.wh) return;
     if(cf && d.cityName!==cf) return;
     if(term && !(d.n.toLowerCase().includes(term)||d.full.toLowerCase().includes(term))) return;
     shown++;
-    const card=document.createElement('div'); card.className='card';
-    card.innerHTML='<div class="info"><p class="name">'+d.n+'</p><p class="addr">📍 '+d.full+'</p></div>'+
-                   '<a class="btn" href="'+dir(d)+'" target="_blank" onclick="event.stopPropagation()">▶ '+t.directions+'</a>';
-    card.onclick=()=>{ if(d.marker){ map.setView([d.lat,d.lon],14); d.marker.openPopup(); document.getElementById('map').scrollIntoView({behavior:'smooth',block:'center'}); } };
-    listEl.appendChild(card);
+    listEl.appendChild(makeCard(d,t));
   });
   empty.style.display=shown?'none':'block';
 }
