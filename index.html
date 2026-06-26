@@ -33,6 +33,7 @@
   .card .info{ flex:1;min-width:150px; }
   .card .name{ font-weight:700;font-size:15px;color:var(--navy);margin:0; }
   .card .addr{ font-size:13px;color:#5b6273;margin:3px 0 0; }
+  .card .hours{ font-size:11.5px;color:#8a90a0;margin:4px 0 0; }
   .btn{ white-space:nowrap;display:inline-flex;align-items:center;gap:6px;background:var(--red);color:#fff;border:none;border-radius:9px;padding:9px 14px;font-size:14px;font-weight:700;cursor:pointer;text-decoration:none; }
   .btn:hover{ background:#a8141f; }
   .pop b{ color:var(--navy);font-size:14px; }
@@ -108,19 +109,19 @@
 <script src="https://unpkg.com/leaflet-gesture-handling/dist/leaflet-gesture-handling.min.js"></script>
 <script>
 const data = [
-  {n:"El Sabor Katracho", a:"4267 S Orcas St", c:"Seattle, WA 98118"},
-  {n:"Mojito", a:"8511 Roosevelt Way NE", c:"Seattle, WA 98115"},
-  {n:"El Parche Colombiano", a:"11740 15th Ave NE", c:"Seattle, WA 98125"},
-  {n:"El Parche Colombiano (Tacoma)", a:"6324 E McKinley Ave", c:"Tacoma, WA 98404"},
-  {n:"Paparepas (Renton)", a:"17034 116th Ave SE", c:"Renton, WA 98058"},
-  {n:"Paparepas (Capitol Hill)", a:"1620 Broadway Ste 100E", c:"Seattle, WA 98122"},
-  {n:"Arepa Venezuelan Kitchen", a:"4500 9th Ave NE", c:"Seattle, WA 98105"},
-  {n:"Arepa Venezuelan Kitchen (Bellevue)", a:"4058 Factoria Square Mall SE", c:"Bellevue, WA 98006"},
-  {n:"Club Sur · Café Con Leche", a:"2901 1st Ave S", c:"Seattle, WA 98134"},
-  {n:"La Zuliana Venezuelan Food", a:"10700 SE 208th St #101", c:"Kent, WA 98031"},
-  {n:"Fuel Sports Grill", a:"8037 15th Ave NW", c:"Seattle, WA 98117"},
-  {n:"Waca Maya", a:"10410 Holman Rd N", c:"Seattle, WA 98133"},
-  {n:"Fogo de Chão", a:"18602 Alderwood Mall Pkwy, Ste 1110", c:"Lynnwood, WA 98037"},
+  {n:"El Sabor Katracho", a:"4267 S Orcas St", c:"Seattle, WA 98118", h:"Tue–Sun 12–9pm · Mon closed"},
+  {n:"Mojito", a:"8511 Roosevelt Way NE", c:"Seattle, WA 98115", h:"Mon–Fri 11am–2pm & eve · Sat 10am–10pm · Sun 10am–9pm"},
+  {n:"El Parche Colombiano", a:"11740 15th Ave NE", c:"Seattle, WA 98125", h:"Wed–Sun 11am–10pm · Mon–Tue closed"},
+  {n:"El Parche Colombiano (Tacoma)", a:"6324 E McKinley Ave", c:"Tacoma, WA 98404", h:"Wed–Sun 11am–10pm · Mon–Tue closed"},
+  {n:"Paparepas (Renton)", a:"17034 116th Ave SE", c:"Renton, WA 98058", h:"Sun–Thu 11am–10pm · Fri–Sat 11am–12am"},
+  {n:"Paparepas (Capitol Hill)", a:"1620 Broadway Ste 100E", c:"Seattle, WA 98122", h:"Daily 11am–9pm"},
+  {n:"Arepa Venezuelan Kitchen", a:"4500 9th Ave NE", c:"Seattle, WA 98105", h:"Mon–Thu & Sun 11am–7pm · Fri–Sat 11am–9pm"},
+  {n:"Arepa Venezuelan Kitchen (Bellevue)", a:"4058 Factoria Square Mall SE", c:"Bellevue, WA 98006", h:"Mon–Sat 11am–8pm · Sun 11am–6pm"},
+  {n:"Club Sur · Café Con Leche", a:"2901 1st Ave S", c:"Seattle, WA 98134", h:"Tue–Thu 11am–3pm · Fri 11am–7:30pm · Sat 11:30am–7:30pm · Sun–Mon closed"},
+  {n:"La Zuliana Venezuelan Food", a:"10700 SE 208th St #101", c:"Kent, WA 98031", h:"Sun & Tue–Thu 10am–10pm · Fri–Sat 10am–12am · Mon closed"},
+  {n:"Fuel Sports Grill", a:"8037 15th Ave NW", c:"Seattle, WA 98117", h:"Mon 3–10pm · Tue–Thu 3–11pm · Fri 11:30am–12am · Sat 9am–12am · Sun 9am–10pm"},
+  {n:"Waca Maya", a:"10410 Holman Rd N", c:"Seattle, WA 98133", h:"≈Daily 11am–8:30pm (Sun from 12:30pm)"},
+  {n:"Fogo de Chão", a:"18602 Alderwood Mall Pkwy, Ste 1110", c:"Lynnwood, WA 98037", h:"Mon–Thu 11:30am–9:30pm · Fri 11:30am–10pm · Sat 11am–10pm · Sun 11am–9pm"},
   {n:"Warehouse", a:"801 SW 16th St", c:"Renton, WA 98057", wh:true}
 ];
 data.forEach(d=>{ d.full=d.a+", "+d.c; d.cityName=d.c.split(",")[0]; });
@@ -282,7 +283,8 @@ function makeCard(d,t){
   const card=document.createElement('div'); card.className='card'+(d.wh?' wh':'');
   const nameHtml = d.wh ? displayName(d)+' <span class="badge">📦 '+t.whTag+'</span>' : d.n;
   const btn = d.wh ? '' : '<a class="btn" href="'+dir(d)+'" target="_blank" onclick="event.stopPropagation()">▶ '+t.directions+'</a>';
-  card.innerHTML='<div class="info"><p class="name">'+nameHtml+'</p><p class="addr">📍 '+d.full+'</p></div>'+btn;
+  const hours = d.h ? '<p class="hours">🕒 '+d.h+'</p>' : '';
+  card.innerHTML='<div class="info"><p class="name">'+nameHtml+'</p><p class="addr">📍 '+d.full+'</p>'+hours+'</div>'+btn;
   card.onclick=()=>{ if(d.marker){ map.setView([d.lat,d.lon],14); d.marker.openPopup(); document.getElementById('map').scrollIntoView({behavior:'smooth',block:'center'}); } };
   return card;
 }
