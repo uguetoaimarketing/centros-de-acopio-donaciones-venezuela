@@ -41,6 +41,11 @@
   .empty{ text-align:center;color:#5b6273;padding:20px;font-size:14px; }
   .donate{ padding:0 16px;margin-top:22px; }
   .donate h2{ font-size:18px;color:var(--navy);margin:0 0 10px;font-weight:800; }
+  .priority{ background:#fff0f0;border:2px solid var(--red);border-radius:12px;padding:12px 14px;margin-bottom:16px; }
+  .priority h3{ margin:0 0 8px;color:var(--red);font-size:15px;font-weight:800; }
+  .priority ul{ margin:0;padding-left:18px;columns:2;column-gap:18px; }
+  @media(max-width:560px){ .priority ul{ columns:1; } }
+  .priority li{ font-size:13px;color:#3a4256;padding:3px 0;line-height:1.4;break-inside:avoid; }
   .note{ background:#fff7e6;border:1.5px solid var(--yellow);border-radius:12px;padding:12px 14px;font-size:13.5px;color:#5b4a00;margin-bottom:16px;line-height:1.5; }
   .money{ background:var(--navy);color:#fff;border-radius:12px;margin:14px 16px 0;padding:14px 16px;display:flex;align-items:center;gap:12px;flex-wrap:wrap;justify-content:space-between; }
   .money .mtxt{ font-size:14px;font-weight:600;line-height:1.45;flex:1;min-width:200px; }
@@ -94,6 +99,7 @@
 
   <div class="donate">
     <h2 id="donateTitle"></h2>
+    <div class="priority" id="priorityBox"></div>
     <div class="note" id="note"></div>
     <div class="dcols">
       <div class="dcard ok"><div class="dh" id="hOk"></div><ul id="lOk"></ul></div>
@@ -142,6 +148,19 @@ const T = {
     flow:'<b>How it works:</b> donations collected at the centers are consolidated at our central warehouse in Renton, then shipped to <a href="https://www.globalempowermentmission.org/" target="_blank">Global Empowerment Mission</a> (1850 NW 84th Ave #100, Doral, FL 33126) for international distribution.<span class="chain">Collection centers (WA) → Renton warehouse → GEM, Doral FL → International distribution</span><span class="onlynote">⚠️ The central warehouse only receives shipments from the collection centers — please do not drop off donations here. Bring your items to any collection center above.</span>',
     noResults:"No results.",
     donateTitle:"What to donate",
+    priorityTitle:"🚑 Priority right now",
+    priority:[
+      "Heavy-duty work gloves (to clear rubble & rocks)",
+      "Gauze, sterile dressings &amp; bandages",
+      "Medical tape &amp; elastic/compression bandages",
+      "Antiseptic wipes",
+      "Nitrile or latex exam gloves",
+      "N95 / dust masks",
+      "First-aid kits &amp; tourniquets",
+      "Sturdy closed-toe shoes &amp; work boots",
+      "Flashlights &amp; headlamps",
+      "Protective eyewear"
+    ],
     note:"📦 <b>Please bring everything in boxes.</b> We accept donations that are <b>new, clean, sealed, in-date, and sorted by category</b>. Medicine, chemicals, batteries/power banks, and medical supplies are accepted <b>only if requested and approved by the receiving organization</b>.",
     foot:'Addresses verified · Donate online via <a href="https://www.EmbraceVenezuela.com" target="_blank">Victoria Venezuela Foundation</a>',
     hOk:"✅ Accepted", hCond:"⚠️ Accepted with conditions", hNo:"❌ Not accepted",
@@ -179,6 +198,19 @@ const T = {
     flow:'<b>Cómo funciona:</b> las donaciones recogidas en los centros se consolidan en nuestro almacén central en Renton y luego se envían a <a href="https://www.globalempowermentmission.org/" target="_blank">Global Empowerment Mission</a> (1850 NW 84th Ave #100, Doral, FL 33126) para su distribución internacional.<span class="chain">Centros de acopio (WA) → Almacén Renton → GEM, Doral FL → Distribución internacional</span><span class="onlynote">⚠️ El almacén central solo recibe lo que llega desde los centros de acopio — por favor no lleves donaciones aquí. Entrégalas en cualquiera de los centros de acopio.</span>',
     noResults:"Sin resultados.",
     donateTitle:"Qué donar",
+    priorityTitle:"🚑 Prioridad ahora mismo",
+    priority:[
+      "Guantes de trabajo resistentes (para remover escombros y piedras)",
+      "Gasas, apósitos estériles y vendas",
+      "Esparadrapo y vendas elásticas/de compresión",
+      "Toallitas antisépticas",
+      "Guantes de examen de nitrilo o látex",
+      "Mascarillas N95 / para polvo",
+      "Botiquines y torniquetes",
+      "Zapatos cerrados resistentes y botas de trabajo",
+      "Linternas y linternas de cabeza",
+      "Gafas de protección"
+    ],
     note:"📦 <b>Por favor trae todo en cajas.</b> Recibimos donaciones <b>nuevas, limpias, selladas, vigentes y clasificadas por categoría</b>. Medicamentos, químicos, baterías/power banks y artículos médicos se aceptan <b>solo si han sido solicitados y aprobados por la organización receptora</b>.",
     foot:'Direcciones verificadas · Dona en línea con <a href="https://www.EmbraceVenezuela.com" target="_blank">Victoria Venezuela Foundation</a>',
     hOk:"✅ Sí, recibir", hCond:"⚠️ Con condiciones", hNo:"❌ No aceptado",
@@ -246,6 +278,7 @@ function setLang(l){
   q.placeholder=t.search;
   empty.textContent=t.noResults;
   document.getElementById('donateTitle').textContent=t.donateTitle;
+  document.getElementById('priorityBox').innerHTML='<h3>'+t.priorityTitle+'</h3><ul>'+t.priority.map(x=>'<li>'+x+'</li>').join('')+'</ul>';
   document.getElementById('note').innerHTML=t.note;
   document.getElementById('foot').innerHTML=t.foot;
   document.getElementById('hOk').textContent=t.hOk;
