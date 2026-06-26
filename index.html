@@ -48,6 +48,7 @@
   @media(max-width:560px){ .priority ul{ columns:1; } }
   .priority li{ font-size:13px;color:#3a4256;padding:3px 0;line-height:1.4;break-inside:avoid; }
   .note{ background:#fff7e6;border:1.5px solid var(--yellow);border-radius:12px;padding:12px 14px;font-size:13.5px;color:#5b4a00;margin-bottom:16px;line-height:1.5; }
+  .alert{ background:#fdecec;border:2px solid var(--red);border-radius:12px;margin:14px 16px 0;padding:12px 14px;font-size:14px;font-weight:700;color:var(--red);line-height:1.45; }
   .money{ background:var(--navy);color:#fff;border-radius:12px;margin:14px 16px 0;padding:14px 16px;display:flex;align-items:center;gap:12px;flex-wrap:wrap;justify-content:space-between; }
   .money .mtxt{ font-size:14px;font-weight:600;line-height:1.45;flex:1;min-width:200px; }
   .money a{ background:var(--yellow);color:var(--navy);font-weight:800;text-decoration:none;padding:10px 16px;border-radius:9px;font-size:14px;white-space:nowrap; }
@@ -82,6 +83,8 @@
     </div>
     <button class="toggle" id="toggle" onclick="setLang(LANG==='en'?'es':'en')"></button>
   </div>
+
+  <div class="alert" id="alert"></div>
 
   <div class="money" id="money"></div>
 
@@ -141,6 +144,7 @@ const T = {
     search:"Search by name or city…",
     allCities:"All cities",
     directions:"Directions",
+    alert:"⚠️ We have enough clothing — please do NOT bring more clothes. The urgent need right now is MEDICAL SUPPLIES.",
     money:"💵 Monetary donations are accepted ONLY through Victoria Venezuela Foundation. The collection centers accept physical goods only.", moneyBtn:"Donate online",
     whName:"Central warehouse — Renton", whTag:"From here ships to GEM (Doral, FL)",
     flow:'<b>How it works:</b> donations collected at the centers are consolidated at our central warehouse in Renton, then shipped to <a href="https://www.globalempowermentmission.org/" target="_blank">Global Empowerment Mission</a> (1850 NW 84th Ave #100, Doral, FL 33126) for international distribution.<span class="chain">Collection centers (WA) → Renton warehouse → GEM, Doral FL → International distribution</span><span class="onlynote">⚠️ The central warehouse only receives shipments from the collection centers — please do not drop off donations here. Bring your items to any collection center above.</span>',
@@ -166,6 +170,7 @@ const T = {
     search:"Buscar por nombre o ciudad…",
     allCities:"Todas las ciudades",
     directions:"Cómo llegar",
+    alert:"⚠️ Ya tenemos suficiente ropa — por favor NO traigan más ropa. La urgencia ahora son los INSUMOS MÉDICOS.",
     money:"💵 Las donaciones de dinero se reciben ÚNICAMENTE a través de Victoria Venezuela Foundation. Los centros de acopio reciben solo artículos físicos.", moneyBtn:"Dona en línea",
     whName:"Almacén central — Renton", whTag:"Desde aquí sale a GEM (Doral, FL)",
     flow:'<b>Cómo funciona:</b> las donaciones recogidas en los centros se consolidan en nuestro almacén central en Renton y luego se envían a <a href="https://www.globalempowermentmission.org/" target="_blank">Global Empowerment Mission</a> (1850 NW 84th Ave #100, Doral, FL 33126) para su distribución internacional.<span class="chain">Centros de acopio (WA) → Almacén Renton → GEM, Doral FL → Distribución internacional</span><span class="onlynote">⚠️ El almacén central solo recibe lo que llega desde los centros de acopio — por favor no lleves donaciones aquí. Entrégalas en cualquiera de los centros de acopio.</span>',
@@ -221,6 +226,7 @@ function setLang(l){
   document.getElementById('toggle').textContent=t.toggle;
   document.getElementById('h1').textContent=t.h1;
   document.getElementById('sub').textContent=t.sub;
+  document.getElementById('alert').textContent=t.alert;
   document.getElementById('money').innerHTML='<span class="mtxt">'+t.money+'</span><a href="https://www.EmbraceVenezuela.com" target="_blank">'+t.moneyBtn+'</a>';
   document.getElementById('flow').innerHTML=t.flow;
   q.placeholder=t.search;
