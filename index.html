@@ -246,7 +246,8 @@ function setLang(l){
 
 function popHtml(d){
   const tag = d.wh ? ' 📦 '+T[LANG].whTag : '';
-  return '<div class="pop"><b>'+displayName(d)+'</b>'+tag+'<br>'+d.full+'<br><a href="'+dir(d)+'" target="_blank">▶ '+T[LANG].directions+'</a></div>';
+  const link = d.wh ? '' : '<br><a href="'+dir(d)+'" target="_blank">▶ '+T[LANG].directions+'</a>';
+  return '<div class="pop"><b>'+displayName(d)+'</b>'+tag+'<br>'+d.full+link+'</div>';
 }
 
 async function geocode(d){
@@ -271,8 +272,8 @@ function placeMarker(d){
 function makeCard(d,t){
   const card=document.createElement('div'); card.className='card'+(d.wh?' wh':'');
   const nameHtml = d.wh ? displayName(d)+' <span class="badge">📦 '+t.whTag+'</span>' : d.n;
-  card.innerHTML='<div class="info"><p class="name">'+nameHtml+'</p><p class="addr">📍 '+d.full+'</p></div>'+
-                 '<a class="btn" href="'+dir(d)+'" target="_blank" onclick="event.stopPropagation()">▶ '+t.directions+'</a>';
+  const btn = d.wh ? '' : '<a class="btn" href="'+dir(d)+'" target="_blank" onclick="event.stopPropagation()">▶ '+t.directions+'</a>';
+  card.innerHTML='<div class="info"><p class="name">'+nameHtml+'</p><p class="addr">📍 '+d.full+'</p></div>'+btn;
   card.onclick=()=>{ if(d.marker){ map.setView([d.lat,d.lon],14); d.marker.openPopup(); document.getElementById('map').scrollIntoView({behavior:'smooth',block:'center'}); } };
   return card;
 }
