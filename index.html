@@ -17,6 +17,8 @@
   .head .dot{ width:48px;height:48px;border-radius:50%;background:var(--red);display:flex;align-items:center;justify-content:center;font-size:24px;flex-shrink:0;color:#fff; }
   .head h1{ font-size:21px;margin:0;color:var(--navy);font-weight:800;letter-spacing:-.3px; }
   .head p{ font-size:14px;margin:3px 0 0;color:#5b6273; }
+  .toggle{ margin-left:auto;align-self:flex-start;background:#fff;border:1.5px solid var(--navy);color:var(--navy);border-radius:20px;padding:7px 14px;font-size:13px;font-weight:700;cursor:pointer;white-space:nowrap; }
+  .toggle:hover{ background:var(--navy);color:#fff; }
   .controls{ display:flex;gap:8px;flex-wrap:wrap;margin:14px 16px;align-items:center; }
   .controls input,.controls select{ height:42px;border:1.5px solid #d6d9e0;border-radius:10px;padding:0 12px;font-size:15px;background:#fff; }
   .controls input:focus,.controls select:focus{ outline:none;border-color:var(--navy); }
@@ -58,60 +60,34 @@
   <div class="head">
     <div class="dot">❤</div>
     <div>
-      <h1>Venezuela Needs Us — Donation Drop-off Centers</h1>
-      <p>Check the map to see which one is closer to you, then tap “Directions” to open the route in Google Maps.</p>
+      <h1 id="h1"></h1>
+      <p id="sub"></p>
     </div>
+    <button class="toggle" id="toggle" onclick="setLang(LANG==='en'?'es':'en')"></button>
   </div>
 
   <div class="controls">
-    <input id="q" type="text" placeholder="Search by name or city…">
-    <select id="city"><option value="">All cities</option></select>
+    <input id="q" type="text">
+    <select id="city"></select>
   </div>
 
   <div class="grid">
     <div id="map"></div>
     <div class="list" id="list"></div>
   </div>
-  <div class="empty" id="empty" style="display:none;">No results.</div>
+  <div class="empty" id="empty" style="display:none;"></div>
 
   <div class="donate">
-    <h2>What to donate</h2>
-    <div class="note">We accept donations that are <b>new, clean, sealed, in-date, and sorted by category</b>. Medicine, chemicals, batteries/power banks, and medical supplies are accepted <b>only if requested and approved by the receiving organization</b>.</div>
+    <h2 id="donateTitle"></h2>
+    <div class="note" id="note"></div>
     <div class="dcols">
-      <div class="dcard ok">
-        <div class="dh">✅ Accepted</div>
-        <ul>
-          <li><b>Water &amp; food:</b> bottled water, non-perishable food, energy bars, powdered milk, infant formula, baby food (sealed, in-date, easy-open, avoid glass)</li>
-          <li><b>Hygiene:</b> soap, shampoo, toothpaste &amp; toothbrushes, toilet paper, sanitary pads, diapers, wet wipes, deodorant</li>
-          <li><b>First aid (no medicine):</b> gauze, bandages, medical tape, gloves, saline solution, basic kits, digital thermometers (no mercury)</li>
-          <li><b>Clothing &amp; warmth:</b> clean clothes in good condition, new socks, new underwear only, closed-toe shoes, blankets, sleeping bags</li>
-          <li><b>Shelter:</b> tents, waterproof tarps, sleeping mats, thermal blankets</li>
-          <li><b>For children:</b> diapers, blankets, books, small toys; bottles &amp; pacifiers (new &amp; sealed only)</li>
-        </ul>
-      </div>
-      <div class="dcard cond">
-        <div class="dh">⚠️ Accepted with conditions</div>
-        <ul>
-          <li><b>Pet food:</b> only if logistics allow or requested by an animal shelter — never ahead of food, water, medicine or shelter</li>
-          <li><b>Bleach, disinfectants, liquids, batteries &amp; power banks:</b> local drop-off only — not by courier or air (hazmat restrictions)</li>
-          <li><b>Medicine:</b> only through authorized medical organizations or foundations with permits — never as a general pill collection</li>
-        </ul>
-      </div>
-      <div class="dcard no">
-        <div class="dh">❌ Not accepted</div>
-        <ul>
-          <li>Open or expired medicine; no box, lot or expiry date; loose samples</li>
-          <li>Antibiotics without medical coordination</li>
-          <li>Homemade food or expired food</li>
-          <li>Used underwear; broken shoes</li>
-          <li>Glass containers, aerosols, perfumes, strong chemicals</li>
-          <li>Unsorted or mixed boxes</li>
-        </ul>
-      </div>
+      <div class="dcard ok"><div class="dh" id="hOk"></div><ul id="lOk"></ul></div>
+      <div class="dcard cond"><div class="dh" id="hCond"></div><ul id="lCond"></ul></div>
+      <div class="dcard no"><div class="dh" id="hNo"></div><ul id="lNo"></ul></div>
     </div>
   </div>
 
-  <p class="foot">Addresses verified · Donate online via <a href="https://www.EmbraceVenezuela.com" target="_blank">Victoria Venezuela Foundation</a></p>
+  <p class="foot" id="foot"></p>
 </div>
 
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
@@ -133,12 +109,82 @@ const data = [
 ];
 data.forEach(d=>{ d.full=d.a+", "+d.c; d.cityName=d.c.split(",")[0]; });
 
+const T = {
+  en:{
+    toggle:"Español", lang:"en",
+    h1:"Venezuela Needs Us — Donation Drop-off Centers",
+    sub:"Check the map to see which one is closer to you, then tap “Directions” to open the route in Google Maps.",
+    search:"Search by name or city…",
+    allCities:"All cities",
+    directions:"Directions",
+    noResults:"No results.",
+    donateTitle:"What to donate",
+    note:"We accept donations that are <b>new, clean, sealed, in-date, and sorted by category</b>. Medicine, chemicals, batteries/power banks, and medical supplies are accepted <b>only if requested and approved by the receiving organization</b>.",
+    foot:'Addresses verified · Donate online via <a href="https://www.EmbraceVenezuela.com" target="_blank">Victoria Venezuela Foundation</a>',
+    hOk:"✅ Accepted", hCond:"⚠️ Accepted with conditions", hNo:"❌ Not accepted",
+    ok:[
+      "<b>Water &amp; food:</b> bottled water, non-perishable food, energy bars, powdered milk, infant formula, baby food (sealed, in-date, easy-open, avoid glass)",
+      "<b>Hygiene:</b> soap, shampoo, toothpaste &amp; toothbrushes, toilet paper, sanitary pads, diapers, wet wipes, deodorant",
+      "<b>First aid (no medicine):</b> gauze, bandages, medical tape, gloves, saline solution, basic kits, digital thermometers (no mercury)",
+      "<b>Clothing &amp; warmth:</b> clean clothes in good condition, new socks, new underwear only, closed-toe shoes, blankets, sleeping bags",
+      "<b>Shelter:</b> tents, waterproof tarps, sleeping mats, thermal blankets",
+      "<b>For children:</b> diapers, blankets, books, small toys; bottles &amp; pacifiers (new &amp; sealed only)"
+    ],
+    cond:[
+      "<b>Pet food:</b> only if logistics allow or requested by an animal shelter — never ahead of food, water, medicine or shelter",
+      "<b>Bleach, disinfectants, liquids, batteries &amp; power banks:</b> local drop-off only — not by courier or air (hazmat restrictions)",
+      "<b>Medicine:</b> only through authorized medical organizations or foundations with permits — never as a general pill collection"
+    ],
+    no:[
+      "Open or expired medicine; no box, lot or expiry date; loose samples",
+      "Antibiotics without medical coordination",
+      "Homemade food or expired food",
+      "Used underwear; broken shoes",
+      "Glass containers, aerosols, perfumes, strong chemicals",
+      "Unsorted or mixed boxes"
+    ]
+  },
+  es:{
+    toggle:"English", lang:"es",
+    h1:"Venezuela nos necesita — Centros de acopio",
+    sub:"Revisa el mapa para ver cuál te queda más cerca y toca “Cómo llegar” para abrir la ruta en Google Maps.",
+    search:"Buscar por nombre o ciudad…",
+    allCities:"Todas las ciudades",
+    directions:"Cómo llegar",
+    noResults:"Sin resultados.",
+    donateTitle:"Qué donar",
+    note:"Recibimos donaciones <b>nuevas, limpias, selladas, vigentes y clasificadas por categoría</b>. Medicamentos, químicos, baterías/power banks y artículos médicos se aceptan <b>solo si han sido solicitados y aprobados por la organización receptora</b>.",
+    foot:'Direcciones verificadas · Dona en línea con <a href="https://www.EmbraceVenezuela.com" target="_blank">Victoria Venezuela Foundation</a>',
+    hOk:"✅ Sí, recibir", hCond:"⚠️ Con condiciones", hNo:"❌ No aceptado",
+    ok:[
+      "<b>Agua y alimentos:</b> agua embotellada, alimentos no perecederos, barras energéticas, leche en polvo, fórmula infantil, comida para bebés (sellados, vigentes, fáciles de abrir, evitar vidrio)",
+      "<b>Higiene:</b> jabón, champú, pasta y cepillos dentales, papel higiénico, toallas sanitarias, pañales, toallitas húmedas, desodorante",
+      "<b>Primeros auxilios (sin medicamentos):</b> gasas, vendas, esparadrapo, guantes, suero fisiológico, botiquines básicos, termómetros digitales (sin mercurio)",
+      "<b>Ropa y abrigo:</b> ropa limpia en buen estado, medias nuevas, ropa interior solo nueva, zapatos cerrados, cobijas, sacos de dormir",
+      "<b>Refugio:</b> carpas, lonas impermeables, colchonetas, mantas térmicas",
+      "<b>Para niños:</b> pañales, mantas, libros, juguetes pequeños; biberones y chupetes (solo nuevos y sellados)"
+    ],
+    cond:[
+      "<b>Alimento para mascotas:</b> solo si hay capacidad logística o lo solicita un refugio animal — nunca por encima de comida, agua, medicina o refugio",
+      "<b>Cloro, desinfectantes, líquidos, baterías y power banks:</b> solo entrega local — no por courier ni avión (restricciones de materiales peligrosos)",
+      "<b>Medicamentos:</b> solo a través de organizaciones médicas o fundaciones con permisos — nunca como recolección general de pastillas"
+    ],
+    no:[
+      "Medicamentos abiertos o vencidos; sin caja, lote ni fecha; muestras sueltas",
+      "Antibióticos sin coordinación médica",
+      "Comida casera o alimentos vencidos",
+      "Ropa interior usada; zapatos rotos",
+      "Envases de vidrio, aerosoles, perfumes, químicos fuertes",
+      "Cajas sin clasificar o mixtas"
+    ]
+  }
+};
+
+let LANG = "en";
 const dir = d => "https://www.google.com/maps/dir/?api=1&destination="+encodeURIComponent(d.n+", "+d.full);
 
-const map = L.map('map', {gestureHandling:true, gestureHandlingOptions:{text:{touch:"Usa dos dedos para mover el mapa",scroll:"Usa Ctrl + scroll para hacer zoom"}}}).setView([47.55,-122.25], 10);
-L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{
-  maxZoom:19, attribution:'© OpenStreetMap'
-}).addTo(map);
+const map = L.map('map', {gestureHandling:true}).setView([47.55,-122.25], 10);
+L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{maxZoom:19, attribution:'© OpenStreetMap'}).addTo(map);
 
 const navyIcon = L.divIcon({className:'',iconSize:[26,26],iconAnchor:[13,26],popupAnchor:[0,-24],
   html:'<svg width="26" height="26" viewBox="0 0 26 26"><path d="M13 0C7 0 3 4 3 10c0 7 10 16 10 16s10-9 10-16C23 4 19 0 13 0z" fill="#cf1b2b" stroke="#11214a" stroke-width="1.5"/><circle cx="13" cy="10" r="4" fill="#f4c40b"/></svg>'});
@@ -146,9 +192,41 @@ const navyIcon = L.divIcon({className:'',iconSize:[26,26],iconAnchor:[13,26],pop
 const listEl=document.getElementById('list'), q=document.getElementById('q'),
       city=document.getElementById('city'), empty=document.getElementById('empty');
 
-[...new Set(data.map(d=>d.cityName))].sort().forEach(cn=>{
-  const o=document.createElement('option');o.value=cn;o.textContent=cn;city.appendChild(o);
-});
+function buildCities(){
+  const t=T[LANG];
+  city.innerHTML='<option value="">'+t.allCities+'</option>';
+  [...new Set(data.map(d=>d.cityName))].sort().forEach(cn=>{
+    const o=document.createElement('option');o.value=cn;o.textContent=cn;city.appendChild(o);
+  });
+}
+
+function fillList(id,arr){
+  document.getElementById(id).innerHTML = arr.map(x=>'<li>'+x+'</li>').join('');
+}
+
+function setLang(l){
+  LANG=l; const t=T[l];
+  document.documentElement.lang=l;
+  document.getElementById('toggle').textContent=t.toggle;
+  document.getElementById('h1').textContent=t.h1;
+  document.getElementById('sub').textContent=t.sub;
+  q.placeholder=t.search;
+  empty.textContent=t.noResults;
+  document.getElementById('donateTitle').textContent=t.donateTitle;
+  document.getElementById('note').innerHTML=t.note;
+  document.getElementById('foot').innerHTML=t.foot;
+  document.getElementById('hOk').textContent=t.hOk;
+  document.getElementById('hCond').textContent=t.hCond;
+  document.getElementById('hNo').textContent=t.hNo;
+  fillList('lOk',t.ok); fillList('lCond',t.cond); fillList('lNo',t.no);
+  buildCities();
+  data.forEach(d=>{ if(d.marker) d.marker.setPopupContent(popHtml(d)); });
+  render();
+}
+
+function popHtml(d){
+  return '<div class="pop"><b>'+d.n+'</b><br>'+d.full+'<br><a href="'+dir(d)+'" target="_blank">▶ '+T[LANG].directions+'</a></div>';
+}
 
 async function geocode(d){
   try{
@@ -166,12 +244,11 @@ async function init(){
 
 function placeMarker(d){
   if(!d.lat) return;
-  d.marker=L.marker([d.lat,d.lon],{icon:navyIcon}).addTo(map)
-    .bindPopup('<div class="pop"><b>'+d.n+'</b><br>'+d.full+'<br><a href="'+dir(d)+'" target="_blank">▶ Directions</a></div>');
+  d.marker=L.marker([d.lat,d.lon],{icon:navyIcon}).addTo(map).bindPopup(popHtml(d));
 }
 
 function render(){
-  const term=q.value.trim().toLowerCase(), cf=city.value;
+  const term=q.value.trim().toLowerCase(), cf=city.value, t=T[LANG];
   listEl.innerHTML=''; let shown=0;
   data.forEach(d=>{
     if(cf && d.cityName!==cf) return;
@@ -179,14 +256,14 @@ function render(){
     shown++;
     const card=document.createElement('div'); card.className='card';
     card.innerHTML='<div class="info"><p class="name">'+d.n+'</p><p class="addr">📍 '+d.full+'</p></div>'+
-                   '<a class="btn" href="'+dir(d)+'" target="_blank" onclick="event.stopPropagation()">▶ Directions</a>';
+                   '<a class="btn" href="'+dir(d)+'" target="_blank" onclick="event.stopPropagation()">▶ '+t.directions+'</a>';
     card.onclick=()=>{ if(d.marker){ map.setView([d.lat,d.lon],14); d.marker.openPopup(); document.getElementById('map').scrollIntoView({behavior:'smooth',block:'center'}); } };
     listEl.appendChild(card);
   });
   empty.style.display=shown?'none':'block';
 }
 q.oninput=render; city.onchange=render;
-render(); init();
+setLang('en'); init();
 </script>
 </body>
 </html>
