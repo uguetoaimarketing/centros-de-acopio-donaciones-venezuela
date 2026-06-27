@@ -77,6 +77,7 @@
   .dcard li{ font-size:13px;color:#3a4256;padding:5px 0;border-bottom:1px solid #f0f1f5;line-height:1.45; }
   .dcard li:last-child{ border-bottom:none; }
   .dcard li b{ color:var(--navy); }
+  .dcard li .hl{ background:#fff3bf;font-weight:700;color:#5b4a00;padding:2px 6px;border-radius:4px;display:inline-block; }
   .foot{ font-size:12px;color:#8a90a0;text-align:center;margin-top:16px;padding:0 16px; }
   .foot a{ color:var(--navy);font-weight:700;text-decoration:none; }
 </style>
@@ -181,7 +182,7 @@ const T = {
     foot:'Addresses verified · Donate online via <a href="https://www.EmbraceVenezuela.com" target="_blank">Victoria Venezuela Foundation</a>',
     cats:[
       {h:"🥫 Non-perishable food", items:["Canned protein (chicken, beef, tuna, vienna sausages, sardines)","Canned goods (beans, vegetables, fruits)","Dried fruits &amp; vegetables","Snacks (protein bars, crackers, chips, beef jerky)","Ramen","Meals ready to eat (MREs)"]},
-      {h:"🏠 Household &amp; shelter", items:["Shelter: tents, cots, air mattresses, suitcases, backpacks (new)","Sleeping: sleeping bags, blankets, pillows (new)","Emergency: first-aid kits, LifeStraw filters, solar lanterns, power banks, radios, flashlights, batteries","Cleanup &amp; repair: tarps, duct tape, industrial trash bags, shovels, rakes, work boots","Protective gear: KN95 masks, hazmat suits, work gloves, hand &amp; foot warmers","Packing: moving boxes &amp; packing tape"]},
+      {h:"🏠 Household &amp; shelter", items:["Shelter: tents, cots, air mattresses, suitcases, backpacks (new)","Sleeping: sleeping bags, blankets, pillows (new)","Emergency: first-aid kits, LifeStraw filters, solar lanterns, power banks, radios, flashlights, batteries","Cleanup &amp; repair: tarps, duct tape, industrial trash bags, shovels, rakes, work boots","Protective gear: KN95 masks, hazmat suits, work gloves, hand &amp; foot warmers","<span class=\"hl\">📦 Packing: moving boxes &amp; packing tape</span>"]},
       {h:"👶 Baby &amp; children", items:["Diapers","Wipes","New bottles","Children's hygiene products","New clothes"]},
       {h:"🧼 Hygiene", items:["Toothbrushes / toothpaste","Deodorant","Feminine hygiene products","Toilet paper","Wet wipes"]},
       {h:"🐾 Pets", items:["Pet food (canned dog &amp; cat food, treats)","Pet supplies (bowls, leashes, crates, heavy-duty pads)","Pet care (chew toys, brushes, shampoo &amp; conditioner)"]}
@@ -210,7 +211,7 @@ const T = {
     foot:'Direcciones verificadas · Dona en línea con <a href="https://www.EmbraceVenezuela.com" target="_blank">Victoria Venezuela Foundation</a>',
     cats:[
       {h:"🥫 Alimentos no perecederos", items:["Proteína enlatada (pollo, carne, atún, salchichas viena, sardinas)","Enlatados (frijoles, vegetales, frutas)","Frutas y vegetales deshidratados","Snacks (barras de proteína, galletas, papas, beef jerky)","Ramen","Comidas listas para comer (MRE)"]},
-      {h:"🏠 Hogar y refugio", items:["Refugio: carpas, catres, colchones inflables, maletas, mochilas (nuevos)","Descanso: sacos de dormir, cobijas, almohadas (nuevos)","Emergencia: botiquines, filtros LifeStraw, lámparas solares, power banks, radios, linternas, baterías","Limpieza y reparación: lonas, cinta adhesiva, bolsas de basura industriales, palas, rastrillos, botas de trabajo","Protección: mascarillas KN95, trajes hazmat, guantes de trabajo, calentadores de manos y pies","Empaque: cajas de mudanza y cinta de embalar (teipe)"]},
+      {h:"🏠 Hogar y refugio", items:["Refugio: carpas, catres, colchones inflables, maletas, mochilas (nuevos)","Descanso: sacos de dormir, cobijas, almohadas (nuevos)","Emergencia: botiquines, filtros LifeStraw, lámparas solares, power banks, radios, linternas, baterías","Limpieza y reparación: lonas, cinta adhesiva, bolsas de basura industriales, palas, rastrillos, botas de trabajo","Protección: mascarillas KN95, trajes hazmat, guantes de trabajo, calentadores de manos y pies","<span class=\"hl\">📦 Empaque: cajas de mudanza y cinta de embalar (teipe)</span>"]},
       {h:"👶 Bebés y niños", items:["Pañales","Toallitas húmedas","Biberones nuevos","Productos de higiene infantil","Ropa nueva"]},
       {h:"🧼 Higiene", items:["Cepillos y pasta dental","Desodorante","Productos de higiene femenina","Papel higiénico","Toallitas húmedas"]},
       {h:"🐾 Mascotas", items:["Comida (enlatada para perro y gato, premios)","Artículos (platos, correas, jaulas, pads de alta absorción)","Cuidado (juguetes, cepillos, shampoo y acondicionador)"]}
