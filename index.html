@@ -48,6 +48,13 @@
   .ggrid a:hover img{ transform:scale(1.05); }
   .sharebtn{ display:inline-flex;align-items:center;gap:8px;margin-top:12px;background:#25D366;color:#fff;font-weight:800;text-decoration:none;padding:11px 18px;border-radius:10px;font-size:14px; }
   .sharebtn:hover{ background:#1da851; }
+  .contacts{ padding:0 16px;margin-top:22px; }
+  .contacts h2{ font-size:18px;color:var(--navy);margin:0 0 10px;font-weight:800; }
+  .ccard{ display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;border:1px solid #e4e6ec;border-left:5px solid #25D366;border-radius:10px;padding:12px 14px;margin-bottom:10px; }
+  .ccard .cname{ font-weight:700;color:var(--navy);font-size:15px;margin:0; }
+  .ccard .crole{ font-size:13px;color:#5b6273;margin:3px 0 0; }
+  .ccard a.wbtn{ background:#25D366;color:#fff;font-weight:800;text-decoration:none;padding:9px 14px;border-radius:9px;font-size:14px;white-space:nowrap;display:inline-flex;gap:6px;align-items:center; }
+  .ccard a.wbtn:hover{ background:#1da851; }
   .donate{ padding:0 16px;margin-top:22px; }
   .donate h2{ font-size:18px;color:var(--navy);margin:0 0 4px;font-weight:800; }
   .dsub{ font-size:13.5px;color:#5b6273;margin:0 0 12px; }
@@ -132,6 +139,11 @@
     <div class="dcols" id="dcols"></div>
   </div>
 
+  <div class="contacts">
+    <h2 id="contactsTitle"></h2>
+    <div id="clist"></div>
+  </div>
+
   <p class="foot" id="foot"></p>
 </div>
 
@@ -177,6 +189,12 @@ const T = {
     galleryTitle:"📸 The community in action",
     gallerySub:"Real photos from our drop-off centers and warehouse — thank you, Washington!",
     shareBtn:"📸 Share your photo", shareMsg:"Here's my donation for Venezuela 💙",
+    contactsTitle:"📞 Contacts",
+    contacts:[
+      {name:"Ulises", role:"Logistics — transport, warehouse & packing volunteers", disp:"+1 (206) 384-0189", num:"12063840189"},
+      {name:"Elimar Ugueto", role:"Questions & info · WA–Florida logistics", disp:"+1 (206) 383-5930", num:"12063835930"},
+      {name:"Mariness Scaramazza", role:"Media & press", disp:"+1 (818) 571-9891", num:"18185719891"}
+    ],
     donateTitle:"What to donate",
     donateSub:"Official immediate-needs list requested by Global Empowerment Mission (GEM):",
     note:"📦 <b>Please bring everything in boxes.</b> We accept donations that are <b>new, clean, sealed, in-date, and sorted by category</b>.",
@@ -206,6 +224,12 @@ const T = {
     galleryTitle:"📸 La comunidad en acción",
     gallerySub:"Fotos reales de nuestros centros de acopio y almacén — ¡gracias, Washington!",
     shareBtn:"📸 Comparte tu foto", shareMsg:"Aquí está mi donación para Venezuela 💙",
+    contactsTitle:"📞 Contactos",
+    contacts:[
+      {name:"Ulises", role:"Logística — transporte, almacén y voluntarios para empacar", disp:"+1 (206) 384-0189", num:"12063840189"},
+      {name:"Elimar Ugueto", role:"Preguntas e información · logística WA–Florida", disp:"+1 (206) 383-5930", num:"12063835930"},
+      {name:"Mariness Scaramazza", role:"Medios y prensa", disp:"+1 (818) 571-9891", num:"18185719891"}
+    ],
     donateTitle:"Qué donar",
     donateSub:"Lista oficial de necesidades inmediatas solicitada por Global Empowerment Mission (GEM):",
     note:"📦 <b>Por favor trae todo en cajas.</b> Recibimos donaciones <b>nuevas, limpias, selladas, vigentes y clasificadas por categoría</b>.",
@@ -267,6 +291,8 @@ function setLang(l){
   const sb=document.getElementById('shareBtn'); sb.textContent=t.shareBtn; sb.href="https://wa.me/12063835930?text="+encodeURIComponent(t.shareMsg);
   document.getElementById('donateTitle').textContent=t.donateTitle;
   document.getElementById('donateSub').textContent=t.donateSub;
+  document.getElementById('contactsTitle').textContent=t.contactsTitle;
+  document.getElementById('clist').innerHTML=t.contacts.map(c=>'<div class="ccard"><div><p class="cname">'+c.name+'</p><p class="crole">'+c.role+'</p></div><a class="wbtn" target="_blank" rel="noopener" href="https://wa.me/'+c.num+'">💬 '+c.disp+'</a></div>').join('');
   document.getElementById('note').innerHTML=t.note;
   document.getElementById('foot').innerHTML=t.foot;
   let cards=t.cats.map(c=>'<div class="dcard ok"><div class="dh">'+c.h+'</div><ul>'+c.items.map(i=>'<li>'+i+'</li>').join('')+'</ul></div>').join('');
