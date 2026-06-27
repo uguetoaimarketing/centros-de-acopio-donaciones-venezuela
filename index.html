@@ -45,6 +45,8 @@
   .ggrid a{ display:block;aspect-ratio:1;overflow:hidden;border-radius:10px;border:1px solid #e4e6ec; }
   .ggrid img{ width:100%;height:100%;object-fit:cover;display:block;transition:transform .2s; }
   .ggrid a:hover img{ transform:scale(1.05); }
+  .sharebtn{ display:inline-flex;align-items:center;gap:8px;margin-top:12px;background:#25D366;color:#fff;font-weight:800;text-decoration:none;padding:11px 18px;border-radius:10px;font-size:14px; }
+  .sharebtn:hover{ background:#1da851; }
   .donate{ padding:0 16px;margin-top:22px; }
   .donate h2{ font-size:18px;color:var(--navy);margin:0 0 4px;font-weight:800; }
   .dsub{ font-size:13.5px;color:#5b6273;margin:0 0 12px; }
@@ -116,7 +118,9 @@
       <a href="img/g3.jpg" target="_blank"><img src="img/g3.jpg" loading="lazy" alt=""></a>
       <a href="img/g4.jpg" target="_blank"><img src="img/g4.jpg" loading="lazy" alt=""></a>
       <a href="img/g5.jpg" target="_blank"><img src="img/g5.jpg" loading="lazy" alt=""></a>
+      <a href="img/g6.jpg" target="_blank"><img src="img/g6.jpg" loading="lazy" alt=""></a>
     </div>
+    <a class="sharebtn" id="shareBtn" target="_blank" rel="noopener"></a>
   </div>
 
   <div class="donate">
@@ -169,6 +173,7 @@ const T = {
     noResults:"No results.",
     galleryTitle:"📸 The community in action",
     gallerySub:"Real photos from our drop-off centers and warehouse — thank you, Washington!",
+    shareBtn:"📸 Share your photo", shareMsg:"Here's my donation for Venezuela 💙",
     donateTitle:"What to donate",
     donateSub:"Official immediate-needs list requested by Global Empowerment Mission (GEM):",
     note:"📦 <b>Please bring everything in boxes.</b> We accept donations that are <b>new, clean, sealed, in-date, and sorted by category</b>. Medicine, chemicals, batteries/power banks, and medical supplies are accepted <b>only if requested and approved by the receiving organization</b>.",
@@ -197,6 +202,7 @@ const T = {
     noResults:"Sin resultados.",
     galleryTitle:"📸 La comunidad en acción",
     gallerySub:"Fotos reales de nuestros centros de acopio y almacén — ¡gracias, Washington!",
+    shareBtn:"📸 Comparte tu foto", shareMsg:"Aquí está mi donación para Venezuela 💙",
     donateTitle:"Qué donar",
     donateSub:"Lista oficial de necesidades inmediatas solicitada por Global Empowerment Mission (GEM):",
     note:"📦 <b>Por favor trae todo en cajas.</b> Recibimos donaciones <b>nuevas, limpias, selladas, vigentes y clasificadas por categoría</b>. Medicamentos, químicos, baterías/power banks y artículos médicos se aceptan <b>solo si han sido solicitados y aprobados por la organización receptora</b>.",
@@ -255,6 +261,7 @@ function setLang(l){
   empty.textContent=t.noResults;
   document.getElementById('galleryTitle').textContent=t.galleryTitle;
   document.getElementById('gallerySub').textContent=t.gallerySub;
+  const sb=document.getElementById('shareBtn'); sb.textContent=t.shareBtn; sb.href="https://wa.me/12063835930?text="+encodeURIComponent(t.shareMsg);
   document.getElementById('donateTitle').textContent=t.donateTitle;
   document.getElementById('donateSub').textContent=t.donateSub;
   document.getElementById('note').innerHTML=t.note;
