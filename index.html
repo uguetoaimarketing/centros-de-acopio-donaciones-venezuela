@@ -39,6 +39,12 @@
   .pop b{ color:var(--navy);font-size:14px; }
   .pop a{ display:inline-block;margin-top:8px;background:var(--red);color:#fff;padding:7px 12px;border-radius:8px;text-decoration:none;font-weight:700;font-size:13px; }
   .empty{ text-align:center;color:#5b6273;padding:20px;font-size:14px; }
+  .gallery{ padding:0 16px;margin-top:22px; }
+  .gallery h2{ font-size:18px;color:var(--navy);margin:0 0 4px;font-weight:800; }
+  .ggrid{ display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:8px; }
+  .ggrid a{ display:block;aspect-ratio:1;overflow:hidden;border-radius:10px;border:1px solid #e4e6ec; }
+  .ggrid img{ width:100%;height:100%;object-fit:cover;display:block;transition:transform .2s; }
+  .ggrid a:hover img{ transform:scale(1.05); }
   .donate{ padding:0 16px;margin-top:22px; }
   .donate h2{ font-size:18px;color:var(--navy);margin:0 0 4px;font-weight:800; }
   .dsub{ font-size:13.5px;color:#5b6273;margin:0 0 12px; }
@@ -101,6 +107,18 @@
   </div>
   <div class="empty" id="empty" style="display:none;"></div>
 
+  <div class="gallery">
+    <h2 id="galleryTitle"></h2>
+    <p class="dsub" id="gallerySub"></p>
+    <div class="ggrid">
+      <a href="img/g1.jpg" target="_blank"><img src="img/g1.jpg" loading="lazy" alt=""></a>
+      <a href="img/g2.jpg" target="_blank"><img src="img/g2.jpg" loading="lazy" alt=""></a>
+      <a href="img/g3.jpg" target="_blank"><img src="img/g3.jpg" loading="lazy" alt=""></a>
+      <a href="img/g4.jpg" target="_blank"><img src="img/g4.jpg" loading="lazy" alt=""></a>
+      <a href="img/g5.jpg" target="_blank"><img src="img/g5.jpg" loading="lazy" alt=""></a>
+    </div>
+  </div>
+
   <div class="donate">
     <h2 id="donateTitle"></h2>
     <p class="dsub" id="donateSub"></p>
@@ -149,6 +167,8 @@ const T = {
     whName:"Central warehouse — Renton", whTag:"From here ships to GEM (Doral, FL)",
     flow:'<b>How it works:</b> donations collected at the centers are consolidated at our central warehouse in Renton, then shipped to <a href="https://www.globalempowermentmission.org/" target="_blank">Global Empowerment Mission</a> (1850 NW 84th Ave #100, Doral, FL 33126) for international distribution.<span class="chain">Collection centers (WA) → Renton warehouse → GEM, Doral FL → International distribution</span><span class="onlynote">⚠️ The central warehouse only receives shipments from the collection centers — please do not drop off donations here. Bring your items to any collection center above.</span>',
     noResults:"No results.",
+    galleryTitle:"📸 The community in action",
+    gallerySub:"Real photos from our drop-off centers and warehouse — thank you, Washington!",
     donateTitle:"What to donate",
     donateSub:"Official immediate-needs list requested by Global Empowerment Mission (GEM):",
     note:"📦 <b>Please bring everything in boxes.</b> We accept donations that are <b>new, clean, sealed, in-date, and sorted by category</b>. Medicine, chemicals, batteries/power banks, and medical supplies are accepted <b>only if requested and approved by the receiving organization</b>.",
@@ -175,6 +195,8 @@ const T = {
     whName:"Almacén central — Renton", whTag:"Desde aquí sale a GEM (Doral, FL)",
     flow:'<b>Cómo funciona:</b> las donaciones recogidas en los centros se consolidan en nuestro almacén central en Renton y luego se envían a <a href="https://www.globalempowermentmission.org/" target="_blank">Global Empowerment Mission</a> (1850 NW 84th Ave #100, Doral, FL 33126) para su distribución internacional.<span class="chain">Centros de acopio (WA) → Almacén Renton → GEM, Doral FL → Distribución internacional</span><span class="onlynote">⚠️ El almacén central solo recibe lo que llega desde los centros de acopio — por favor no lleves donaciones aquí. Entrégalas en cualquiera de los centros de acopio.</span>',
     noResults:"Sin resultados.",
+    galleryTitle:"📸 La comunidad en acción",
+    gallerySub:"Fotos reales de nuestros centros de acopio y almacén — ¡gracias, Washington!",
     donateTitle:"Qué donar",
     donateSub:"Lista oficial de necesidades inmediatas solicitada por Global Empowerment Mission (GEM):",
     note:"📦 <b>Por favor trae todo en cajas.</b> Recibimos donaciones <b>nuevas, limpias, selladas, vigentes y clasificadas por categoría</b>. Medicamentos, químicos, baterías/power banks y artículos médicos se aceptan <b>solo si han sido solicitados y aprobados por la organización receptora</b>.",
@@ -231,6 +253,8 @@ function setLang(l){
   document.getElementById('flow').innerHTML=t.flow;
   q.placeholder=t.search;
   empty.textContent=t.noResults;
+  document.getElementById('galleryTitle').textContent=t.galleryTitle;
+  document.getElementById('gallerySub').textContent=t.gallerySub;
   document.getElementById('donateTitle').textContent=t.donateTitle;
   document.getElementById('donateSub').textContent=t.donateSub;
   document.getElementById('note').innerHTML=t.note;
