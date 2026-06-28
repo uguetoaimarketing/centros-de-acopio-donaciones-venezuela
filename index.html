@@ -114,7 +114,7 @@
 
   <div class="alert" id="alert" style="display:none;"></div>
 
-  <div class="contacts" id="volSection" style="margin-top:14px;display:none;">
+  <div class="contacts" id="volSection" style="margin-top:14px;">
     <h2 id="volTitle"></h2>
     <div id="volBtns" style="display:flex;gap:10px;flex-wrap:wrap;"></div>
   </div>
@@ -126,7 +126,7 @@
     <select id="city"></select>
   </div>
 
-  <div class="grid" id="grid" style="display:none;">
+  <div class="grid" id="grid">
     <div id="map"></div>
     <div class="list" id="list"></div>
   </div>
@@ -196,6 +196,8 @@ const volItems = [
   "Renton warehouse · Jun 28, 1–4pm (8)",
   "Mojito (Seattle) · Jun 28, 11am–2pm (4)"
 ];
+
+const showOnlyWarehouse = true;
 
 const T = {
   en:{
@@ -355,7 +357,7 @@ function setLang(l){
 
 function popHtml(d){
   const tag = d.wh ? ' 📦 '+T[LANG].whTag : '';
-  const link = d.wh ? '' : '<br><a href="'+dir(d)+'" target="_blank">▶ '+T[LANG].directions+'</a>';
+  const link = '<br><a href="'+dir(d)+'" target="_blank">▶ '+T[LANG].directions+'</a>';
   return '<div class="pop"><b>'+displayName(d)+'</b>'+tag+'<br>'+d.full+link+'</div>';
 }
 
@@ -368,20 +370,23 @@ async function geocode(d){
 }
 
 async function init(){
-  for(const d of data){ await geocode(d); await new Promise(r=>setTimeout(r,900)); placeMarker(d); }
-  const pts=data.filter(d=>d.lat).map(d=>[d.lat,d.lon]);
-  if(pts.length) map.fitBounds(pts,{padding:[30,30]});
+  const targets = showOnlyWarehouse ? data.filter(d=>d.wh) : data;
+  for(const d of targets){ await geocode(d); await new Promise(r=>setTimeout(r,900)); placeMarker(d); }
+  const pts=data.filter(d=>d.lat && (!showOnlyWarehouse||d.wh)).map(d=>[d.lat,d.lon]);
+  if(pts.length>1) map.fitBounds(pts,{padding:[30,30]});
+  else if(pts.length===1) map.setView(pts[0],14);
 }
 
 function placeMarker(d){
   if(!d.lat) return;
+  if(showOnlyWarehouse && !d.wh) return;
   d.marker=L.marker([d.lat,d.lon],{icon:d.wh?whIcon:navyIcon,zIndexOffset:d.wh?1000:0}).addTo(map).bindPopup(popHtml(d));
 }
 
 function makeCard(d,t){
   const card=document.createElement('div'); card.className='card'+(d.wh?' wh':'');
   const nameHtml = d.wh ? displayName(d)+' <span class="badge">📦 '+t.whTag+'</span>' : d.n;
-  const btn = d.wh ? '' : '<a class="btn" href="'+dir(d)+'" target="_blank" onclick="event.stopPropagation()">▶ '+t.directions+'</a>';
+  const btn = '<a class="btn" href="'+dir(d)+'" target="_blank" onclick="event.stopPropagation()">▶ '+t.directions+'</a>';
   const hours = d.h ? '<p class="hours">🕒 '+d.h+'</p>' : '';
   card.innerHTML='<div class="info"><p class="name">'+nameHtml+'</p><p class="addr">📍 '+d.full+'</p>'+hours+'</div>'+btn;
   card.onclick=()=>{ if(d.marker){ map.setView([d.lat,d.lon],14); d.marker.openPopup(); document.getElementById('map').scrollIntoView({behavior:'smooth',block:'center'}); } };
@@ -393,7 +398,7 @@ function render(){
   listEl.innerHTML=''; let shown=0;
   const wh=data.find(d=>d.wh);
   if(wh){ listEl.appendChild(makeCard(wh,t)); }
-  data.forEach(d=>{
+  if(!showOnlyWarehouse) data.forEach(d=>{
     if(d.wh) return;
     if(cf && d.cityName!==cf) return;
     if(term && !(d.n.toLowerCase().includes(term)||d.full.toLowerCase().includes(term))) return;
