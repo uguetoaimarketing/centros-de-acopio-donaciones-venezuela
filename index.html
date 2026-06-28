@@ -149,7 +149,7 @@
   <div class="donate">
     <h2 id="donateTitle"></h2>
     <p class="dsub" id="donateSub"></p>
-    <div class="note" id="note"></div>
+    <div class="note" id="note" style="display:none;"></div>
     <div class="dcols" id="dcols"></div>
   </div>
 
@@ -211,7 +211,7 @@ const T = {
     openInfo:"🚫 <b>We are no longer accepting physical donations until further notice.</b> We are currently <span style=\"color:var(--red)\">setting up the GoFundMe account</span> to cover the shipping of everything collected. 🙏 Please check back in a few hours to contribute.",
     money:"💵 Monetary donations are accepted ONLY through Victoria Venezuela Foundation. The collection centers accept physical goods only.", moneyBtn:"Donate online",
     whName:"Central warehouse — Renton", whTag:"From here ships to GEM (Doral, FL)",
-    flow:'<b>How it works:</b> donations collected at the centers are consolidated at our central warehouse in Renton, then shipped to <a href="https://www.globalempowermentmission.org/" target="_blank">Global Empowerment Mission</a> (1850 NW 84th Ave #100, Doral, FL 33126) for international distribution.<span class="chain">Collection centers (WA) → Renton warehouse → GEM, Doral FL → International distribution</span><span class="onlynote">⚠️ The central warehouse only receives shipments from the collection centers — please do not drop off donations here. Bring your items to any collection center above.</span>',
+    flow:'<b>How it works:</b> donations collected at the centers are consolidated at our central warehouse, then shipped to <a href="https://www.globalempowermentmission.org/" target="_blank">Global Empowerment Mission</a> (Doral, FL) for international distribution.<span class="chain">Collection centers (WA) → Central warehouse → GEM, Doral FL → International distribution</span>',
     noResults:"No results.",
     galleryTitle:"📸 The community in action",
     gallerySub:"Real photos from our drop-off centers and warehouse — thank you, Washington!",
@@ -257,7 +257,7 @@ const T = {
     openInfo:"🚫 <b>No se reciben más donaciones físicas hasta nuevo aviso.</b> En este momento estamos <span style=\"color:var(--red)\">creando la cuenta de GoFundMe</span> para cubrir el envío de todo lo recolectado. 🙏 Regresa en unas horas para aportar.",
     money:"💵 Las donaciones de dinero se reciben ÚNICAMENTE a través de Victoria Venezuela Foundation. Los centros de acopio reciben solo artículos físicos.", moneyBtn:"Dona en línea",
     whName:"Almacén central — Renton", whTag:"Desde aquí sale a GEM (Doral, FL)",
-    flow:'<b>Cómo funciona:</b> las donaciones recogidas en los centros se consolidan en nuestro almacén central en Renton y luego se envían a <a href="https://www.globalempowermentmission.org/" target="_blank">Global Empowerment Mission</a> (1850 NW 84th Ave #100, Doral, FL 33126) para su distribución internacional.<span class="chain">Centros de acopio (WA) → Almacén Renton → GEM, Doral FL → Distribución internacional</span><span class="onlynote">⚠️ El almacén central solo recibe lo que llega desde los centros de acopio — por favor no lleves donaciones aquí. Entrégalas en cualquiera de los centros de acopio.</span>',
+    flow:'<b>Cómo funciona:</b> las donaciones recogidas en los centros se consolidan en nuestro almacén central y luego se envían a <a href="https://www.globalempowermentmission.org/" target="_blank">Global Empowerment Mission</a> (Doral, FL) para su distribución internacional.<span class="chain">Centros de acopio (WA) → Almacén central → GEM, Doral FL → Distribución internacional</span>',
     noResults:"Sin resultados.",
     galleryTitle:"📸 La comunidad en acción",
     gallerySub:"Fotos reales de nuestros centros de acopio y almacén — ¡gracias, Washington!",
@@ -346,8 +346,7 @@ function setLang(l){
   document.getElementById('clist').innerHTML=t.contacts.map(c=>'<div class="ccard"><div><p class="cname">'+c.name+'</p><p class="crole">'+c.role+'</p></div><a class="wbtn" target="_blank" rel="noopener" href="https://wa.me/'+c.num+'">💬 '+c.disp+'</a></div>').join('');
   document.getElementById('note').innerHTML=t.note;
   document.getElementById('foot').innerHTML=t.foot;
-  let cards=t.cats.map(c=>'<div class="dcard '+(c.cls||'ok')+'"><div class="dh">'+c.h+'</div><ul>'+c.items.map(i=>'<li>'+i+'</li>').join('')+'</ul></div>').join('');
-  cards+='<div class="dcard no"><div class="dh">'+t.notAcceptedTitle+'</div><ul>'+t.notAccepted.map(i=>'<li>'+i+'</li>').join('')+'</ul></div>';
+  let cards=t.cats.filter(c=>c.cls==='med').map(c=>'<div class="dcard '+(c.cls||'ok')+'"><div class="dh">'+c.h+'</div><ul>'+c.items.map(i=>'<li>'+i+'</li>').join('')+'</ul></div>').join('');
   document.getElementById('dcols').innerHTML=cards;
   buildCities();
   data.forEach(d=>{ if(d.marker) d.marker.setPopupContent(popHtml(d)); });
