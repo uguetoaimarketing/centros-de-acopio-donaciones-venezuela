@@ -86,6 +86,7 @@
   .dcard{ border:1px solid #e4e6ec;border-radius:12px;padding:0;overflow:hidden; }
   .dcard .dh{ padding:10px 14px;font-weight:800;font-size:14px;color:#fff; }
   .dcard.ok .dh{ background:#1f9d57; } .dcard.cond .dh{ background:#e08600; } .dcard.no .dh{ background:var(--red); }
+  .dcard.med{ border:2px solid var(--navy); } .dcard.med .dh{ background:var(--navy); }
   .dcard ul{ margin:0;padding:10px 14px 12px;list-style:none; }
   .dcard li{ font-size:13px;color:#3a4256;padding:5px 0;border-bottom:1px solid #f0f1f5;line-height:1.45; }
   .dcard li:last-child{ border-bottom:none; }
@@ -220,8 +221,16 @@ const T = {
     note:"📦 <b>Please bring everything in boxes.</b> We accept donations that are <b>new, clean, sealed, in-date, and sorted by category</b>.",
     foot:'Addresses verified · Donate online via <a href="https://donations.embracevenezuela.com/" target="_blank">Victoria Venezuela Foundation</a>',
     cats:[
+      {h:"🩺 Medical supplies — most urgent", cls:"med", items:[
+        "<b>🩹 Wound care:</b> adhesive bandages, sterile gauze, medical tape, antiseptic wipes, antibiotic ointment (Neosporin), hydrogen peroxide, elastic (ACE) bandages, cotton balls &amp; swabs, burn gel",
+        "<b>💊 OTC medicine (sealed boxes):</b> acetaminophen (Tylenol), ibuprofen (Advil), oral rehydration salts (Pedialyte), anti-diarrheal (Imodium), antacids, antihistamines, electrolyte powder",
+        "<b>🦴 Support &amp; mobility:</b> instant cold packs, slings, finger splints, wrist/ankle braces, crutches, canes, walkers (new)",
+        "<b>🧤 Protection:</b> disposable nitrile gloves, masks (surgical / N95), safety goggles",
+        "<b>🧼 Medical hygiene:</b> hand sanitizer, soap, water purification tablets, sanitary pads, first-aid kits, thermometers, insect repellent",
+        "<span style=\"color:#a32d2d;font-weight:700\">🚫 Do NOT bring: prescription or controlled drugs, loose pills, opened/expired products, refrigerated meds, IV fluids, homemade remedies — those are handled by licensed medical organizations.</span>"
+      ]},
       {h:"🥫 Non-perishable food", items:["Canned protein (chicken, beef, tuna, vienna sausages, sardines)","Canned goods (beans, vegetables, fruits)","Dried fruits &amp; vegetables","Snacks (protein bars, crackers, chips, beef jerky)","Ramen","Meals ready to eat (MREs)"]},
-      {h:"🏠 Household &amp; shelter", items:["Shelter: tents, cots, air mattresses, suitcases, backpacks (new)","Sleeping: sleeping bags, blankets, pillows (new)","Emergency: first-aid kits, LifeStraw filters, solar lanterns, power banks, radios, flashlights, batteries","Cleanup &amp; repair: tarps, duct tape, industrial trash bags, shovels, rakes, work boots","Protective gear: KN95 masks, hazmat suits, work gloves, hand &amp; foot warmers","<span class=\"hl\">📦 Packing: moving boxes &amp; packing tape</span>"]},
+      {h:"🏠 Household &amp; shelter", items:["Shelter: tents, cots, air mattresses, suitcases, backpacks (new)","Sleeping: sleeping bags, blankets, pillows (new)","Emergency: LifeStraw filters, solar lanterns, power banks, radios, flashlights, batteries","Cleanup &amp; repair: tarps, duct tape, industrial trash bags, shovels, rakes, work boots","Protective gear: hazmat suits, work gloves, hand &amp; foot warmers","<span class=\"hl\">📦 Packing: moving boxes &amp; packing tape</span>"]},
       {h:"👶 Baby &amp; children", items:["Diapers","Wipes","New bottles","Children's hygiene products","New clothes"]},
       {h:"🧼 Hygiene", items:["Toothbrushes / toothpaste","Deodorant","Feminine hygiene products","Toilet paper","Wet wipes"]},
       {h:"🐾 Pets", items:["Pet food (canned dog &amp; cat food, treats)","Pet supplies (bowls, leashes, crates, heavy-duty pads)","Pet care (chew toys, brushes, shampoo &amp; conditioner)"]}
@@ -257,8 +266,16 @@ const T = {
     note:"📦 <b>Por favor trae todo en cajas.</b> Recibimos donaciones <b>nuevas, limpias, selladas, vigentes y clasificadas por categoría</b>.",
     foot:'Direcciones verificadas · Dona en línea con <a href="https://donations.embracevenezuela.com/" target="_blank">Victoria Venezuela Foundation</a>',
     cats:[
+      {h:"🩺 Insumos médicos — lo más urgente", cls:"med", items:[
+        "<b>🩹 Cuidado de heridas:</b> curitas, gasas estériles, esparadrapo, toallitas antisépticas, pomada antibiótica (Neosporin), agua oxigenada, vendas elásticas (ACE), algodón e hisopos, gel para quemaduras",
+        "<b>💊 Medicina sin receta (cajas selladas):</b> acetaminofén (Tylenol), ibuprofeno (Advil), sales de rehidratación (Pedialyte), antidiarreico (Imodium), antiácidos, antialérgicos, electrolitos en polvo",
+        "<b>🦴 Soporte y movilidad:</b> compresas frías, cabestrillos, férulas para dedos, muñequeras/tobilleras, muletas, bastones, andaderas (nuevos)",
+        "<b>🧤 Protección:</b> guantes desechables de nitrilo, mascarillas (quirúrgicas / N95), gafas de protección",
+        "<b>🧼 Higiene médica:</b> gel antibacterial, jabón, pastillas potabilizadoras de agua, toallas sanitarias, botiquines armados, termómetros, repelente",
+        "<span style=\"color:#a32d2d;font-weight:700\">🚫 NO traer: medicamentos con receta o controlados, pastillas sueltas, productos abiertos/vencidos, medicinas con refrigeración, sueros IV, remedios caseros — eso lo manejan organizaciones médicas licenciadas.</span>"
+      ]},
       {h:"🥫 Alimentos no perecederos", items:["Proteína enlatada (pollo, carne, atún, salchichas viena, sardinas)","Enlatados (frijoles, vegetales, frutas)","Frutas y vegetales deshidratados","Snacks (barras de proteína, galletas, papas, beef jerky)","Ramen","Comidas listas para comer (MRE)"]},
-      {h:"🏠 Hogar y refugio", items:["Refugio: carpas, catres, colchones inflables, maletas, mochilas (nuevos)","Descanso: sacos de dormir, cobijas, almohadas (nuevos)","Emergencia: botiquines, filtros LifeStraw, lámparas solares, power banks, radios, linternas, baterías","Limpieza y reparación: lonas, cinta adhesiva, bolsas de basura industriales, palas, rastrillos, botas de trabajo","Protección: mascarillas KN95, trajes hazmat, guantes de trabajo, calentadores de manos y pies","<span class=\"hl\">📦 Empaque: cajas de mudanza y cinta de embalar (teipe)</span>"]},
+      {h:"🏠 Hogar y refugio", items:["Refugio: carpas, catres, colchones inflables, maletas, mochilas (nuevos)","Descanso: sacos de dormir, cobijas, almohadas (nuevos)","Emergencia: filtros LifeStraw, lámparas solares, power banks, radios, linternas, baterías","Limpieza y reparación: lonas, cinta adhesiva, bolsas de basura industriales, palas, rastrillos, botas de trabajo","Protección: trajes hazmat, guantes de trabajo, calentadores de manos y pies","<span class=\"hl\">📦 Empaque: cajas de mudanza y cinta de embalar (teipe)</span>"]},
       {h:"👶 Bebés y niños", items:["Pañales","Toallitas húmedas","Biberones nuevos","Productos de higiene infantil","Ropa nueva"]},
       {h:"🧼 Higiene", items:["Cepillos y pasta dental","Desodorante","Productos de higiene femenina","Papel higiénico","Toallitas húmedas"]},
       {h:"🐾 Mascotas", items:["Comida (enlatada para perro y gato, premios)","Artículos (platos, correas, jaulas, pads de alta absorción)","Cuidado (juguetes, cepillos, shampoo y acondicionador)"]}
@@ -321,7 +338,7 @@ function setLang(l){
   document.getElementById('clist').innerHTML=t.contacts.map(c=>'<div class="ccard"><div><p class="cname">'+c.name+'</p><p class="crole">'+c.role+'</p></div><a class="wbtn" target="_blank" rel="noopener" href="https://wa.me/'+c.num+'">💬 '+c.disp+'</a></div>').join('');
   document.getElementById('note').innerHTML=t.note;
   document.getElementById('foot').innerHTML=t.foot;
-  let cards=t.cats.map(c=>'<div class="dcard ok"><div class="dh">'+c.h+'</div><ul>'+c.items.map(i=>'<li>'+i+'</li>').join('')+'</ul></div>').join('');
+  let cards=t.cats.map(c=>'<div class="dcard '+(c.cls||'ok')+'"><div class="dh">'+c.h+'</div><ul>'+c.items.map(i=>'<li>'+i+'</li>').join('')+'</ul></div>').join('');
   cards+='<div class="dcard no"><div class="dh">'+t.notAcceptedTitle+'</div><ul>'+t.notAccepted.map(i=>'<li>'+i+'</li>').join('')+'</ul></div>';
   document.getElementById('dcols').innerHTML=cards;
   buildCities();
