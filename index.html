@@ -97,7 +97,6 @@
 </head>
 <body>
 <div class="wrap">
-  <div class="ticker"><div class="ticker-track" id="tickerTrack"></div></div>
   <div class="flag"><i class="y"></i><i class="b"></i><i class="r"></i></div>
   <div class="head">
     <div class="dot">❤</div>
@@ -301,9 +300,6 @@ function setLang(l){
   LANG=l; const t=T[l];
   document.documentElement.lang=l;
   document.getElementById('toggle').textContent=t.toggle;
-  const sep='<span class="tsep">✦</span>';
-  const block='<span class="tlabel">'+t.volLabel+'</span>'+volItems.join(sep)+sep;
-  document.getElementById('tickerTrack').innerHTML=block+block;
   document.getElementById('h1').textContent=t.h1;
   document.getElementById('sub').textContent=t.sub;
   document.getElementById('alert').textContent=t.alert;
