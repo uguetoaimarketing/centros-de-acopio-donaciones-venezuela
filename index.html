@@ -132,6 +132,10 @@
   </div>
   <div class="empty" id="empty" style="display:none;"></div>
 
+  <div style="padding:0 16px;margin-top:12px;">
+    <a class="wbtn" id="transportBtn" target="_blank" rel="noopener"></a>
+  </div>
+
   <div class="gallery">
     <h2 id="galleryTitle"></h2>
     <p class="dsub" id="gallerySub"></p>
@@ -218,6 +222,7 @@ const T = {
     galleryTitle:"📸 The community in action",
     gallerySub:"Real photos from our drop-off centers and warehouse — thank you, Washington!",
     shareBtn:"📸 Share your photo", shareMsg:"Here's my donation for Venezuela 💙",
+    transportBtn:"🚚 Can you help with transport?", transportMsg:"Hi Ulises, I can help with transport for the Venezuela donations.",
     contactsTitle:"📞 Contacts",
     contacts:[
       {name:"Ulises Andrade", role:"Logistics — transport, warehouse & packing volunteers", disp:"+1 (206) 384-0189", num:"12063840189"},
@@ -264,6 +269,7 @@ const T = {
     galleryTitle:"📸 La comunidad en acción",
     gallerySub:"Fotos reales de nuestros centros de acopio y almacén — ¡gracias, Washington!",
     shareBtn:"📸 Comparte tu foto", shareMsg:"Aquí está mi donación para Venezuela 💙",
+    transportBtn:"🚚 ¿Puedes ayudar con transporte?", transportMsg:"Hola Ulises, puedo ayudar con el transporte de las donaciones para Venezuela.",
     contactsTitle:"📞 Contactos",
     contacts:[
       {name:"Ulises Andrade", role:"Logística — transporte, almacén y voluntarios para empacar", disp:"+1 (206) 384-0189", num:"12063840189"},
@@ -338,6 +344,7 @@ function setLang(l){
   document.getElementById('galleryTitle').textContent=t.galleryTitle;
   document.getElementById('gallerySub').textContent=t.gallerySub;
   const sb=document.getElementById('shareBtn'); sb.textContent=t.shareBtn; sb.href="https://wa.me/12063835930?text="+encodeURIComponent(t.shareMsg);
+  const tb=document.getElementById('transportBtn'); tb.textContent=t.transportBtn; tb.href="https://wa.me/12063840189?text="+encodeURIComponent(t.transportMsg);
   document.getElementById('donateTitle').textContent=t.donateTitle;
   document.getElementById('donateSub').textContent=t.donateSub;
   document.getElementById('volTitle').textContent=t.volTitle;
