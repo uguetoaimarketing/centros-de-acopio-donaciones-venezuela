@@ -59,8 +59,8 @@
   .ccard{ display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;border:1px solid #e4e6ec;border-left:5px solid #25D366;border-radius:10px;padding:12px 14px;margin-bottom:10px; }
   .ccard .cname{ font-weight:700;color:var(--navy);font-size:15px;margin:0; }
   .ccard .crole{ font-size:13px;color:#5b6273;margin:3px 0 0; }
-  .ccard a.wbtn{ background:#25D366;color:#fff;font-weight:800;text-decoration:none;padding:9px 14px;border-radius:9px;font-size:14px;white-space:nowrap;display:inline-flex;gap:6px;align-items:center; }
-  .ccard a.wbtn:hover{ background:#1da851; }
+  .wbtn{ background:#25D366;color:#fff;font-weight:800;text-decoration:none;padding:11px 16px;border-radius:9px;font-size:14px;white-space:nowrap;display:inline-flex;gap:6px;align-items:center; }
+  .wbtn:hover{ background:#1da851; }
   .donate{ padding:0 16px;margin-top:22px; }
   .donate h2{ font-size:18px;color:var(--navy);margin:0 0 4px;font-weight:800; }
   .dsub{ font-size:13.5px;color:#5b6273;margin:0 0 12px; }
@@ -147,6 +147,11 @@
   </div>
 
   <div class="contacts">
+    <h2 id="volTitle"></h2>
+    <div id="volBtns" style="display:flex;gap:10px;flex-wrap:wrap;"></div>
+  </div>
+
+  <div class="contacts">
     <h2 id="contactsTitle"></h2>
     <div id="clist"></div>
   </div>
@@ -190,6 +195,7 @@ const T = {
   en:{
     toggle:"Español", lang:"en",
     volLabel:"🙌 Volunteers needed",
+    volTitle:"🙌 Become a volunteer", volPack:"📦 Packing volunteers", volTransport:"🚚 Transport volunteers",
     h1:"Venezuela Needs Us — Donation Drop-off Centers (WA)",
     sub:"Check the map to see which one is closer to you, then tap “Directions” to open the route in Google Maps.",
     search:"Search by name or city…",
@@ -226,6 +232,7 @@ const T = {
   es:{
     toggle:"English", lang:"es",
     volLabel:"🙌 Se buscan voluntarios",
+    volTitle:"🙌 Sé voluntario", volPack:"📦 Voluntarios para empacar", volTransport:"🚚 Voluntarios para transporte",
     h1:"Venezuela nos necesita — Centros de acopio (WA)",
     sub:"Revisa el mapa para ver cuál te queda más cerca y toca “Cómo llegar” para abrir la ruta en Google Maps.",
     search:"Buscar por nombre o ciudad…",
@@ -309,6 +316,10 @@ function setLang(l){
   const sb=document.getElementById('shareBtn'); sb.textContent=t.shareBtn; sb.href="https://wa.me/12063835930?text="+encodeURIComponent(t.shareMsg);
   document.getElementById('donateTitle').textContent=t.donateTitle;
   document.getElementById('donateSub').textContent=t.donateSub;
+  document.getElementById('volTitle').textContent=t.volTitle;
+  document.getElementById('volBtns').innerHTML=
+    '<a class="wbtn" target="_blank" rel="noopener" href="https://chat.whatsapp.com/EIy65dc4Rwm6rXrWcHIOHj">'+t.volPack+'</a>'+
+    '<a class="wbtn" target="_blank" rel="noopener" href="https://chat.whatsapp.com/JfkN3auGLgK7tapa4FzGlX">'+t.volTransport+'</a>';
   document.getElementById('contactsTitle').textContent=t.contactsTitle;
   document.getElementById('clist').innerHTML=t.contacts.map(c=>'<div class="ccard"><div><p class="cname">'+c.name+'</p><p class="crole">'+c.role+'</p></div><a class="wbtn" target="_blank" rel="noopener" href="https://wa.me/'+c.num+'">💬 '+c.disp+'</a></div>').join('');
   document.getElementById('note').innerHTML=t.note;
