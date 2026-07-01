@@ -94,6 +94,19 @@
   .dcard li:last-child{ border-bottom:none; }
   .dcard li b{ color:var(--navy); }
   .dcard li .hl{ background:#fff3bf;font-weight:700;color:#5b4a00;padding:2px 6px;border-radius:4px;display:inline-block; }
+  .flyer{ border:1px solid #e4e6ec;border-radius:14px;padding:22px 20px;background:#fff;text-align:center;max-width:620px;margin:0 auto; }
+  .flyer-flag{ display:flex;height:9px;border-radius:4px;overflow:hidden;margin-bottom:14px; }
+  .flyer-flag i{ flex:1; } .flyer-flag .y{ background:var(--yellow);} .flyer-flag .b{ background:var(--navy);} .flyer-flag .r{ background:var(--red);}
+  .flyer-title{ color:var(--red);font-size:clamp(42px,13vw,74px);font-weight:900;margin:0;line-height:.95;letter-spacing:-1px; }
+  .flyer-sub{ color:var(--navy);font-size:clamp(16px,4.6vw,25px);font-weight:800;margin:10px 0 0;text-transform:uppercase;line-height:1.2; }
+  .flyer-dots{ border-top:3px dotted var(--navy);margin:16px 0; }
+  .flyer-row{ display:flex;align-items:center;gap:14px;text-align:left;margin:16px 0; }
+  .flyer-ico{ font-size:42px;flex-shrink:0;line-height:1; }
+  .flyer-row p{ margin:0;color:var(--navy);font-size:16px;font-weight:600;line-height:1.4; }
+  .flyer-yellow{ background:var(--yellow);color:var(--navy);font-weight:800;font-size:18px;border-radius:10px;padding:14px 16px;margin:16px 0;line-height:1.3; }
+  .flyer-nobox{ border:2px solid var(--red);border-radius:10px;padding:14px 16px;color:#111;font-weight:800;font-size:19px;margin:16px 0;display:flex;align-items:center;gap:10px;justify-content:center;flex-wrap:wrap;line-height:1.25; }
+  .flyer-x{ background:var(--red);color:#fff;border-radius:50%;width:30px;height:30px;display:inline-flex;align-items:center;justify-content:center;flex-shrink:0;font-size:15px; }
+  .flyer-foot{ color:var(--navy);font-style:italic;font-weight:600;font-size:15px;margin:16px 0 0;border-top:2px solid var(--navy);padding-top:14px;line-height:1.4; }
   .foot{ font-size:12px;color:#8a90a0;text-align:center;margin-top:16px;padding:0 16px; }
   .foot a{ color:var(--navy);font-weight:700;text-decoration:none; }
 </style>
@@ -155,10 +168,28 @@
   </div>
 
   <div class="donate">
-    <h2 id="donateTitle"></h2>
-    <p class="dsub" id="donateSub"></p>
+    <div class="flyer">
+      <div class="flyer-flag"><i class="y"></i><i class="b"></i><i class="r"></i></div>
+      <div class="flyer-title">IMPORTANTE</div>
+      <div class="flyer-sub">En Seattle ya no estamos aceptando más donaciones físicas</div>
+      <div class="flyer-dots"></div>
+      <div class="flyer-row">
+        <span class="flyer-ico">🏬</span>
+        <p>Por razones logísticas y de capacidad, en Seattle ya no podemos recibir más donaciones en este momento.</p>
+      </div>
+      <div class="flyer-yellow">💙 ¡Muchas gracias por todo el apoyo y la solidaridad!</div>
+      <div class="flyer-nobox"><span class="flyer-x">✕</span> <span>Por favor <span style="color:var(--red);text-decoration:underline;">NO</span> traiga más donaciones físicas a Seattle.</span></div>
+      <div class="flyer-row">
+        <span class="flyer-ico">🌐</span>
+        <p>Cada persona deberá buscar la manera de hacer llegar sus donaciones físicas directamente a <b style="color:var(--navy)">Miami</b> o a <b style="color:var(--red)">Caracas</b>.</p>
+      </div>
+      <p class="flyer-foot">Gracias por su comprensión y por seguir apoyando a Venezuela. 🇻🇪</p>
+    </div>
+
+    <h2 id="donateTitle" style="display:none;"></h2>
+    <p class="dsub" id="donateSub" style="display:none;"></p>
     <div class="note" id="note" style="display:none;"></div>
-    <div class="dcols" id="dcols"></div>
+    <div class="dcols" id="dcols" style="display:none;"></div>
   </div>
 
   <div class="contacts">
